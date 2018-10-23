@@ -5,6 +5,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @MappedSuperclass
 public class User {
@@ -16,7 +20,13 @@ public class User {
 	private String firstName;
 	@Column(name = "last_name")
 	private String lastName;
+	@NotNull(message="required")
+	@Email(message="Enter a valid name")
 	private String email;
+	
+	@NotNull(message="required")
+	@Size(min=6, message="size must 6 or more characters")
+	@Transient
 	private String password;
 	@Column(name = "phone_number")
 	private int phoneNumber;
@@ -31,6 +41,11 @@ public class User {
 		this.email = email;
 		this.password = password;
 		this.phoneNumber = phoneNumber;
+	}
+	
+	
+	public int getId() {
+		return id;
 	}
 
 	public String getFirstName() {
@@ -72,5 +87,13 @@ public class User {
 	public void setPhoneNumber(int phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
+
+	@Override
+	public String toString() {
+	    return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
+		    + ", password=" + password + ", phoneNumber=" + phoneNumber + "]";
+	}
+	
+	
 
 }

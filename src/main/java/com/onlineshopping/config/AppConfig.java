@@ -28,7 +28,8 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 @EnableWebMvc
 @EnableTransactionManagement
 @ComponentScan("com.onlineshopping")
-@PropertySource("classpath:persistence-mysql.properties")
+@PropertySource({"classpath:persistence-mysql.properties"
+			,"classpath:security-persistence-mysql.properties"})
 public class AppConfig implements WebMvcConfigurer {
 
 	@Autowired
@@ -47,6 +48,40 @@ public class AppConfig implements WebMvcConfigurer {
 		viewResolver.setSuffix(".jsp");
 		
 		return viewResolver;
+	}
+	
+	@Bean
+	public DataSource securityDataSource() {
+		
+		ComboPooledDataSource securityDataSource
+									= new ComboPooledDataSource();
+				
+		try {
+			securityDataSource.setDriverClass(env.getProperty("security.jdbc.driver"));
+		} catch (PropertyVetoException exc) {
+			throw new RuntimeException(exc);
+		}
+		
+		logger.info(">>> security.jdbc.url=" + env.getProperty("security.jdbc.url"));
+		logger.info(">>> security.jdbc.user=" + env.getProperty("security.jdbc.user"));
+		
+		// set database connection props
+		securityDataSource.setJdbcUrl(env.getProperty("security.jdbc.url"));
+		securityDataSource.setUser(env.getProperty("security.jdbc.user"));
+		securityDataSource.setPassword(env.getProperty("security.jdbc.password"));
+		
+		// set connection pool props
+		securityDataSource.setInitialPoolSize(
+				getIntProperty("security.connection.pool.initialPoolSize"));
+		
+		securityDataSource.setMinPoolSize(
+				getIntProperty("security.connection.pool.minPoolSize"));
+		securityDataSource.setMaxPoolSize(
+				getIntProperty("security.connection.pool.maxPoolSize"));
+		securityDataSource.setMaxIdleTime(
+				getIntProperty("security.connection.pool.maxIdleTime"));
+		
+		return securityDataSource;
 	}
 	
 	@Bean

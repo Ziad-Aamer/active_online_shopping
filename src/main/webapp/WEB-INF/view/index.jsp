@@ -629,8 +629,8 @@
 							alt="">
 						<div class="banner-caption">
 							<h1 class="primary-color">
-								HOT DEAL<br>
-								<span class="white-color font-weak">Up to 50% OFF</span>
+								HOT DEAL<br> <span class="white-color font-weak">Up
+									to 50% OFF</span>
 							</h1>
 							<button class="primary-btn">Shop Now</button>
 						</div>
@@ -1177,8 +1177,8 @@
 							alt="">
 						<div class="banner-caption text-center">
 							<h1 class="primary-color">
-								HOT DEAL<br>
-								<span class="white-color font-weak">Up to 50% OFF</span>
+								HOT DEAL<br> <span class="white-color font-weak">Up
+									to 50% OFF</span>
 							</h1>
 							<button class="primary-btn">Shop Now</button>
 						</div>
@@ -1831,10 +1831,10 @@
 	<!-- /FOOTER -->
 
 	<!-- jQuery Plugins -->
-<!-- 	<script src="http://code.jquery.com/jquery-3.2.1.min.js"></script> -->
-<!-- 	<script -->
-<!-- 		src="https://cdnjs.cloudflare.com/ajax/libs/jquery.sticky/1.0.4/jquery.sticky.js"></script> -->
-	
+	<!-- 	<script src="http://code.jquery.com/jquery-3.2.1.min.js"></script> -->
+	<!-- 	<script -->
+	<!-- 		src="https://cdnjs.cloudflare.com/ajax/libs/jquery.sticky/1.0.4/jquery.sticky.js"></script> -->
+
 	<script
 		src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
 	<script

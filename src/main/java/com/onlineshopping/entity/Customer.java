@@ -26,7 +26,7 @@ public class Customer extends User {
 	@JoinColumn(name = "cart_id")
 	private Cart cart;
 
-	Customer() {
+	public Customer() {
 	}
 
 	public void addOrder(Order order) {
