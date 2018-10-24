@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.onlineshopping.entity.Category;
 
-public interface CategoryDAO {
+public interface CategoryDao {
 
 	public List<Category> getCategories();
 }

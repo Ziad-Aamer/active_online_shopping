@@ -1,11 +1,11 @@
 
 package com.onlineshopping.controller;
 
+import java.util.logging.Logger;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.facebook.api.Facebook;
 import org.springframework.social.facebook.api.User;
@@ -20,7 +20,7 @@ import com.onlineshopping.social.SocialContext;
 @Controller
 public class FacebookPostsController {
 
-	private static final Logger logger = LoggerFactory.getLogger(FacebookPostsController.class);
+	private static final Logger logger = Logger.getLogger(FacebookPostsController.class.getName());
 
 	@Autowired
 	private SocialContext socialContext;

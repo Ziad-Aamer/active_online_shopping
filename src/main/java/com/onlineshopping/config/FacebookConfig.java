@@ -1,9 +1,9 @@
 package com.onlineshopping.config;
 
+import java.util.logging.Logger;
+
 import javax.sql.DataSource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -32,7 +32,7 @@ import com.onlineshopping.social.UserCookieGenerator;
 @PropertySource("classpath:application.properties")
 public class FacebookConfig implements InitializingBean {
 
-	private static final Logger logger = LoggerFactory.getLogger(FacebookConfig.class);
+	private static final Logger logger = Logger.getLogger(FacebookConfig.class.getName());
 
 	@Autowired
 	private Environment env;
@@ -42,7 +42,7 @@ public class FacebookConfig implements InitializingBean {
 	private UsersConnectionRepository usersConnectionRepositiory;
 
 	@Autowired
-	private DataSource dataSource;
+	private DataSource myDataSource;
 
 	/**
 	 * Point to note: the name of the bean is either the name of the method
@@ -63,6 +63,7 @@ public class FacebookConfig implements InitializingBean {
 		ConnectionFactoryRegistry registry = new ConnectionFactoryRegistry();
 		registry.addConnectionFactory(new FacebookConnectionFactory(env.getProperty("spring.social.facebook.appId"),
 				env.getProperty("spring.social.facebook.appSecret")));
+		System.out.println("Facebook secret: " + env.getProperty("spring.social.facebook.appSecret"));
 		return registry;
 	}
 
@@ -116,7 +117,7 @@ public class FacebookConfig implements InitializingBean {
 	@Override
 	public void afterPropertiesSet() throws Exception {
 
-		JdbcUsersConnectionRepository usersConnectionRepositiory = new JdbcUsersConnectionRepository(dataSource,
+		JdbcUsersConnectionRepository usersConnectionRepositiory = new JdbcUsersConnectionRepository(myDataSource,
 				connectionFactoryLocator(), Encryptors.noOpText());
 
 		socialContext = new SocialContext(usersConnectionRepositiory, new UserCookieGenerator(), facebook());

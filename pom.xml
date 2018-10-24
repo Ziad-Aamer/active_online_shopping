@@ -57,7 +57,14 @@
 			<artifactId>spring-security-config</artifactId>
 			<version>${springsecurity.version}</version>
 		</dependency>
-
+		
+		<!-- Add Spring Security Taglibs support -->
+		<dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-taglibs</artifactId>
+		    <version>${springsecurity.version}</version>
+		</dependency>
+		
 		<!-- Spring Social -->
 		<dependency>
 			<groupId>org.springframework.social</groupId>
@@ -139,7 +146,14 @@
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
 		</dependency>
-
+		
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+		
 		<!-- Hibernate Validator -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -147,31 +161,25 @@
 			<version>6.0.13.Final</version>
 		</dependency>
 
-<!-- https://mvnrepository.com/artifact/javax.servlet/jstl -->
-<dependency>
-    <groupId>javax.servlet</groupId>
-    <artifactId>jstl</artifactId>
-    <version>1.2</version>
-</dependency>
 
 		<!-- Logging -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>${org.slf4j-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>jcl-over-slf4j</artifactId>
-			<version>${org.slf4j-version}</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>${org.slf4j-version}</version>
-			<scope>runtime</scope>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.slf4j</groupId> -->
+<!-- 			<artifactId>slf4j-api</artifactId> -->
+<!-- 			<version>${org.slf4j-version}</version> -->
+<!-- 		</dependency> -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.slf4j</groupId> -->
+<!-- 			<artifactId>jcl-over-slf4j</artifactId> -->
+<!-- 			<version>${org.slf4j-version}</version> -->
+<!-- 			<scope>runtime</scope> -->
+<!-- 		</dependency> -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.slf4j</groupId> -->
+<!-- 			<artifactId>slf4j-log4j12</artifactId> -->
+<!-- 			<version>${org.slf4j-version}</version> -->
+<!-- 			<scope>runtime</scope> -->
+<!-- 		</dependency> -->
 
 		<!-- @Inject -->
 		<dependency>

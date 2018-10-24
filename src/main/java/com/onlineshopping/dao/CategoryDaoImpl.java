@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.onlineshopping.entity.Category;
 
 @Repository
-public class CategoryDAOImpl implements CategoryDAO {
+public class CategoryDaoImpl implements CategoryDao {
 
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -19,7 +19,7 @@ public class CategoryDAOImpl implements CategoryDAO {
 	@Override
 	public List<Category> getCategories() {
 		Session session = sessionFactory.getCurrentSession();
-		Query query = session.createQuery("select categoryName from Category");
+		Query<Category> query = session.createQuery("select categoryName from Category",Category.class);
 		List<Category> categories = query.list();
 		System.out.println("categories from Category DAO : " + categories);
 		return categories;

@@ -90,7 +90,7 @@ public class CustomerController {
 		
 		customerService.addCustomer(customer);
 		
-		return "index";
+		return "redirect:/user/showMyLoginPage";
 	}
 	
 	
