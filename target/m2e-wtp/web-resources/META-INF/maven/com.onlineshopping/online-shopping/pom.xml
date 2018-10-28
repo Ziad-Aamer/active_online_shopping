@@ -182,11 +182,11 @@
 <!-- 		</dependency> -->
 
 		<!-- @Inject -->
-		<dependency>
-			<groupId>javax.inject</groupId>
-			<artifactId>javax.inject</artifactId>
-			<version>1</version>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>javax.inject</groupId> -->
+<!-- 			<artifactId>javax.inject</artifactId> -->
+<!-- 			<version>1</version> -->
+<!-- 		</dependency> -->
 
 	</dependencies>
 
@@ -195,7 +195,6 @@
 		<finalName>online-shopping</finalName>
 
 		<plugins>
-
 			<!-- Builds a Web Application Archive (WAR) file from the project output 
 				and its dependencies. -->
 			<plugin>

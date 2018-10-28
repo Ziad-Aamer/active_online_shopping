@@ -109,9 +109,15 @@
 								<button type="submit" class="btn btn-primary">Register</button>
 							</div>
 						</div>
+		    <a href="/signin/facebook">sign in with Facebook</a>
 
 					</form:form>
+<br>
 
+<form action="<c:url value="/signin/facebook" />" method="POST">
+		    <button type="submit">Sign in with Facebook</button>
+		    <input type="hidden" name="scope" value="public_profile,email" />	    
+		</form>
 				</div>
 
 			</div>

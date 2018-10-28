@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.onlineshopping.social.SocialContext;
 
-@RequestMapping("/facebook")
+//@RequestMapping("/facebook")
 @Controller
 public class FacebookPostsController {
 
@@ -30,7 +30,6 @@ public class FacebookPostsController {
 		return "signin";
 	}
 
-	// @RequestMapping(value = "/show-posts", method = RequestMethod.GET)
 	@RequestMapping(value = "/posts", method = RequestMethod.GET)
 	public String showPostsForUser(HttpServletRequest request, HttpServletResponse response, Model model) {
 		System.out.println(
@@ -53,9 +52,6 @@ public class FacebookPostsController {
 		User userProfile = facebook.fetchObject("me", User.class, fields);
 		logger.info("\n==========> email facebook: " + userProfile.getEmail() + " firstName: "
 				+ userProfile.getFirstName());
-		// List<Post> posts = feedOps.getHomeFeed();
-		// logger.info("Retrieved " + posts.size() + " posts from the Facebook
-		// authenticated user");
 		return nextView;
 	}
 }
