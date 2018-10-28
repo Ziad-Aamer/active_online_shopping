@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.onlineshopping.social.SocialContext;
 
-//@RequestMapping("/facebook")
+@RequestMapping("/facebook")
 @Controller
 public class FacebookPostsController {
 

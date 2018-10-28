@@ -18,7 +18,7 @@ public class CategoryController {
 	@Autowired
 	private CategoryService categoryService;
 
-	@GetMapping("/list")
+	@GetMapping("/search")
 	public String getCategories(Model model) {
 
 		List<Category> categoreis = categoryService.getCategoriesLAZY();

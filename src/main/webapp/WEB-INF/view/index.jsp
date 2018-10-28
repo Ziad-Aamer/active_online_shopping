@@ -1,6 +1,7 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="security"
+	uri="http://www.springframework.org/security/tags"%>
 
 <html lang="en">
 
@@ -98,17 +99,22 @@
 
 					<!-- Search -->
 					<div class="header-search">
-						<form:form>
-							<input class="input search-input" type="text"
-								placeholder="Enter your keyword">
-							<select class="input search-categories">
-								<option value="0">All Categories</option>
-								<option value="1">Category 01</option>
-								<option value="1">Category 02</option>
-							</select>
-							<button class="search-btn">
-								<i class="fa fa-search"></i>
-							</button>
+						<form:form action="${pageContext.request.contextPath}/product/search"
+							modelAttribute="category" method="get">
+							<input class="input search-input" name="searchProducts"
+								type="text" placeholder="Enter your keyword">
+
+								<form:select path="categoryName">
+								<form:option value="NONE"> --SELECT--</form:option>
+									<c:forEach var="cat" items="${categories}">
+									<form:option value="${cat.categoryName}" label="${cat.categoryName}" />
+									</c:forEach>
+								</form:select>
+
+								<button type="submit" class="search-btn">
+									<i class="fa fa-search"></i>
+								</button>
+							
 						</form:form>
 					</div>
 					<!-- /Search -->
@@ -124,44 +130,45 @@
 								</div>
 								<security:authorize access="isAuthenticated()">
 									<strong class="text-uppercase">
-									${loggedinUser.firstName} ${loggedinUser.lastName}<i
-									class="fa fa-caret-down"></i></strong>
+										${loggedinUser.firstName} ${loggedinUser.lastName}<i
+										class="fa fa-caret-down"></i>
+									</strong>
 								</security:authorize>
 								<security:authorize access="!isAuthenticated()">
 									<strong class="text-uppercase">My Account <i
-									class="fa fa-caret-down"></i></strong>
+										class="fa fa-caret-down"></i></strong>
 								</security:authorize>
 
-							</div> 
-							<security:authorize access="!isAuthenticated()">
-								<a href="${pageContext.request.contextPath}/user/showMyLoginPage" class="text-uppercase">Login</a> / 
-								<a href="${pageContext.request.contextPath}/customer/showRegistrationForm"class="text-uppercase">Join</a>
+							</div> <security:authorize access="!isAuthenticated()">
+								<a
+									href="${pageContext.request.contextPath}/user/showMyLoginPage"
+									class="text-uppercase">Login</a> / 
+								<a
+									href="${pageContext.request.contextPath}/customer/showRegistrationForm"
+									class="text-uppercase">Join</a>
+							</security:authorize> <security:authorize access="isAuthenticated()">
+								<a href="${pageContext.request.contextPath}/user/logout"
+									class="text-uppercase">Logout</a>
 							</security:authorize>
-							<security:authorize access="isAuthenticated()">
-								<a href="${pageContext.request.contextPath}/user/logout" class="text-uppercase">Logout</a>
-							</security:authorize>
-								
+
 							<ul class="custom-menu">
 								<li><a href="#"><i class="fa fa-user-o"></i> My Account</a></li>
 								<li><a href="#"><i class="fa fa-heart-o"></i> My
 										Wishlist</a></li>
 								<li><a href="#"><i class="fa fa-exchange"></i> Compare</a></li>
 								<li><a href="#"><i class="fa fa-check"></i> Checkout</a></li>
-								
+
 							</ul>
 						</li>
 						<!-- /Account -->
 
 						<!-- Cart -->
 						<li class="header-cart dropdown default-dropdown"><a
-							href="${pageContext.request.contextPath}/cart/showCart"
-							>
+							href="${pageContext.request.contextPath}/cart/showCart">
 								<div class="header-btns-icon">
 									<i class="fa fa-shopping-cart"></i> <span class="qty">3</span>
-								</div> <strong class="text-uppercase">My Cart:</strong> <br> 
-						</a>
-
-							</li>
+								</div> <strong class="text-uppercase">My Cart:</strong> <br>
+						</a></li>
 						<!-- /Cart -->
 
 						<!-- Mobile nav toggle-->
@@ -190,31 +197,34 @@
 					<span class="category-header">Categories <i
 						class="fa fa-list"></i></span>
 					<ul class="category-list">
-					   <c:forEach var="category" items="${categories}">
-						   <li class="dropdown side-dropdown">
-							   	<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-							   	${category.categoryName} <i class="fa fa-angle-right"></i></a>
-							   	<div class="custom-menu">
+						<c:forEach var="category" items="${categories}">
+							<li class="dropdown side-dropdown"><a
+								class="dropdown-toggle" data-toggle="dropdown"
+								aria-expanded="true"> ${category.categoryName} <i
+									class="fa fa-angle-right"></i></a>
+								<div class="custom-menu">
 									<div class="row">
 										<c:forEach items="${category.subCategories}" var="subCat">
 											<div class="col-md-4">
 												<ul class="list-links">
 													<li>
-													<h3 class="list-links-title">${subCat.name}</h3></li>
+														<h3 class="list-links-title">${subCat.name}</h3>
+													</li>
 													<c:forEach var="product" items="${subCat.products}">
 														<li><a href="#">${product.name}</a></li>
 													</c:forEach>
-												</ul>	
+												</ul>
 												<hr class="hidden-md hidden-lg">
 											</div>
 										</c:forEach>
 									</div>
-									
+
 									<div class="row hidden-sm hidden-xs">
 										<div class="col-md-12">
 											<hr>
-											<a class="banner banner-1" href="#">
-												<img src="${pageContext.request.contextPath}/resources/img/banner05.jpg" alt="">
+											<a class="banner banner-1" href="#"> <img
+												src="${pageContext.request.contextPath}/resources/img/banner05.jpg"
+												alt="">
 												<div class="banner-caption text-center">
 													<h2 class="white-color">NEW COLLECTION</h2>
 													<h3 class="white-color font-weak">HOT DEAL</h3>
@@ -222,10 +232,9 @@
 											</a>
 										</div>
 									</div>
-									
-								</div>
-						   </li>
-					   </c:forEach>
+
+								</div></li>
+						</c:forEach>
 
 						<li><a href="#">View All</a></li>
 					</ul>
@@ -450,7 +459,7 @@
 
 	<!-- section -->
 
-			
+
 
 	<!-- section -->
 	<div class="section section-grey">
@@ -521,9 +530,7 @@
 				<!-- section title -->
 
 				<!-- Product Single -->
-				<c:forEach var="category" items="${categories}">
-					<c:forEach var="subCat" items="${category.subCategories}">
-						<c:forEach var="product" items="${subCat.products}">
+						<c:forEach var="product" items="${products}">
 							<div class="col-md-3 col-sm-6 col-xs-6">
 								<div class="product product-single">
 									<div class="product-thumb">
@@ -532,7 +539,7 @@
 										</button>
 										<img
 											src="${pageContext.request.contextPath}/resources/img/${product.url}"
-											height="200px" width="300px"  alt="">
+											height="200px" width="300px" alt="">
 									</div>
 									<div class="product-body">
 										<h3 class="product-price">$${product.price}</h3>
@@ -544,8 +551,7 @@
 										<h2 class="product-name">
 											<a href="#">${product.name}</a>
 										</h2>
-										<i class="product-name">
-											<a href="#">${product.description}</a>
+										<i class="product-name"> <a href="#">${product.description}</a>
 										</i>
 										<div class="product-btns">
 											<button class="main-btn icon-btn">
@@ -562,11 +568,9 @@
 								</div>
 							</div>
 						</c:forEach>
-					</c:forEach>
-				</c:forEach>
 				<!-- /Product Single -->
 
-				
+
 			</div>
 			<!-- /row -->
 		</div>
