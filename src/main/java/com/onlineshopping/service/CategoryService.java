@@ -6,5 +6,7 @@ import com.onlineshopping.entity.Category;
 
 public interface CategoryService {
 
-	public List<Category> getCategories();
+	public List<Category> getCategoriesLAZY();
+
+	public List<Category> getCategoriesEAGER();
 }

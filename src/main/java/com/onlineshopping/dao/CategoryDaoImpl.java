@@ -19,8 +19,8 @@ public class CategoryDaoImpl implements CategoryDao {
 	@Override
 	public List<Category> getCategories() {
 		Session session = sessionFactory.getCurrentSession();
-		Query<Category> query = session.createQuery("select categoryName from Category",Category.class);
-		List<Category> categories = query.list();
+		Query<Category> query = session.createQuery("from Category",Category.class);
+		List<Category> categories = query.getResultList();
 		System.out.println("categories from Category DAO : " + categories);
 		return categories;
 	}

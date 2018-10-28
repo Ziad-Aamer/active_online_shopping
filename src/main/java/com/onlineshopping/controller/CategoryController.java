@@ -21,7 +21,7 @@ public class CategoryController {
 	@GetMapping("/list")
 	public String getCategories(Model model) {
 
-		List<Category> categoreis = categoryService.getCategories();
+		List<Category> categoreis = categoryService.getCategoriesLAZY();
 		System.out.println("All Categoriessssss: " + categoreis);
 		model.addAttribute("categories", categoreis);
 		return "index";

@@ -24,7 +24,8 @@ public class Product {
 	private String name;
 	private double price;
 	private String description;
-
+	private String url;
+	
 	@OneToMany(mappedBy = "product"
 			,cascade={CascadeType.PERSIST,CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
 	private List<OrderProduct> orders;
@@ -103,6 +104,19 @@ public class Product {
 
 	public void setCarts(List<Cart> carts) {
 		this.carts = carts;
+	}
+	
+	public String getUrl() {
+	    return url;
+	}
+
+	public void setUrl(String url) {
+	    this.url = url;
+	}
+
+	@Override
+	public String toString() {
+	    return "Product [id=" + id + ", name=" + name + ", price=" + price + ", description=" + description + "]";
 	}
 
 	

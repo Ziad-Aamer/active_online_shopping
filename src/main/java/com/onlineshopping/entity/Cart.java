@@ -22,6 +22,7 @@ public class Cart {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
+	//cart size
 	@Column(name = "number_of_products")
 	private int totalNumberOfProducts;
 
