@@ -7,6 +7,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.onlineshopping.entity.Cart;
 import com.onlineshopping.entity.Customer;
 
 @Repository
@@ -18,6 +19,9 @@ public class CustomerDaoImpl implements CustomerDao{
 	public void addCustomer(Customer customer) {
 		
 		Session session = sessionFactory.getCurrentSession();
+		Cart cart = new Cart(0,0);
+		customer.setCart(cart);
+		
 		session.persist(customer);
 		
 		System.out.println("Customer added with id:" + customer.getId());

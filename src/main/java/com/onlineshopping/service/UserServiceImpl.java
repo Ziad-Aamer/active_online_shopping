@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
 
 	    // save user in the database
 	    userDetailsManager.createUser(tempUser);
-	    System.out.println("User: " + user.getFirstName() + " " + user.getLastName() + "created");
+	    System.out.println("User: " + user.getFirstName() + " " + user.getLastName() + " created");
 	}
 
 	return userExists;

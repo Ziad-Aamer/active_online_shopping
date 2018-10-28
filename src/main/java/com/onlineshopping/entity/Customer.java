@@ -35,7 +35,7 @@ public class Customer extends User {
 		orders.add(order);
 		order.setCustomer(this);
 	}
-
+	
 	public List<Address> getAddresses() {
 		return addresses;
 	}
@@ -59,4 +59,15 @@ public class Customer extends User {
 		this.orders = orders;
 	}
 
+	public Cart getCart() {
+	    return cart;
+	}
+
+	public void setCart(Cart cart) {
+	    this.cart = cart;
+	}
+
+
+	
+	
 }
