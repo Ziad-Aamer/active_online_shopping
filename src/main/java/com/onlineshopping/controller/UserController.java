@@ -32,6 +32,10 @@ public class UserController {
 	}
 	
 	
+	//is called after a successful login 
+	//redirect based on the user role
+	//save the user info in the session
+	
 	@GetMapping("/showUser")
 	public String redirectUserAfterLogin(Principal principal, HttpServletRequest request) {
 	    
@@ -52,8 +56,9 @@ public class UserController {
 	   else if(user instanceof Admin)
 	       return "admin-manageOrders";
 	   
-	   return "redirext:/pageNotFound";
+	   return "redirect:/pageNotFound";
 	}
+	
 	
 	@GetMapping(value="/logout")
 	public String logoutPage (HttpServletRequest request, HttpServletResponse response) {

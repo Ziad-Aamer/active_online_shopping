@@ -8,8 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -34,11 +32,9 @@ public class Product {
 	@JoinColumn(name = "sub_category_id")
 	private SubCategory subCategory;
 
-	@ManyToMany(cascade={CascadeType.PERSIST,CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
-	@JoinTable(name = "cart_product",
-			joinColumns = @JoinColumn(name = "product_id"),
-			inverseJoinColumns = @JoinColumn(name = "cart_id"))
-	private List<Cart> carts;
+	@OneToMany(mappedBy = "product"
+		,cascade={CascadeType.PERSIST,CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
+	private List<CartProduct> carts;
 	
 	public Product() {
 
@@ -98,14 +94,14 @@ public class Product {
 		this.orders = orders;
 	}
 
-	public List<Cart> getCarts() {
-		return carts;
+	public List<CartProduct> getCarts() {
+	    return carts;
 	}
 
-	public void setCarts(List<Cart> carts) {
-		this.carts = carts;
+	public void setCarts(List<CartProduct> carts) {
+	    this.carts = carts;
 	}
-	
+
 	public String getUrl() {
 	    return url;
 	}

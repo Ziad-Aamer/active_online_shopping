@@ -560,9 +560,11 @@
 											<button class="main-btn icon-btn">
 												<i class="fa fa-exchange"></i>
 											</button>
-											<button class="primary-btn add-to-cart">
+											<a href="${pageContext.request.contextPath}/cart/addProduct/${product.id}/" >
+											<button class="primary-btn add-to-cart" >
 												<i class="fa fa-shopping-cart"></i> Add to Cart
 											</button>
+											</a>
 										</div>
 									</div>
 								</div>
