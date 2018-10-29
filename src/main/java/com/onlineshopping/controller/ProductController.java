@@ -26,12 +26,10 @@ public class ProductController {
 	@GetMapping("/search")
 	public String search(@RequestParam("searchProducts") String searchProducts, @RequestParam String categoryName,
 			Model model) {
-		System.out.println("\n============>input Search textBox : " + searchProducts);
-		System.out.println("\n============>selected category  : " + categoryName);
 
 		List<Category> selectedCategories = new ArrayList<>();
 		// get selected category from list for search..
-		if (!categoryName.equals("NONE")) {
+		if (!categoryName.isEmpty()) {
 			selectedCategories = beanInitializer.getCategoriesEAGER().stream()
 					.filter(item -> item.getCategoryName().equals(categoryName)).collect(Collectors.toList());
 		} else {
@@ -57,6 +55,33 @@ public class ProductController {
 		model.addAttribute("categories", categoreis);
 		model.addAttribute("products", products);
 
+		return "index";
+	}
+
+	@GetMapping("/filterByPrice")
+	public String filterByPrice(@RequestParam("price-min") double minPrice, @RequestParam("price-max") double maxPrice,
+			Model model) {
+		System.out.println("inside filter by price :" + minPrice + "  max price : " + maxPrice);
+
+		List<Category> allCategories = new ArrayList<>();
+		List<Product> products = new ArrayList<>();
+
+		allCategories = beanInitializer.getCategoriesEAGER();
+
+		for (Category category : allCategories) {
+
+			for (SubCategory subCategory : category.getSubCategories()) {
+
+				products.addAll(subCategory.getProducts().stream()
+						.filter(item -> item.getPrice() >= minPrice && item.getPrice() <= maxPrice)
+						.collect(Collectors.toList()));
+			}
+		}
+
+		model.addAttribute("category", new Category());
+		model.addAttribute("categories", allCategories);
+		model.addAttribute("products", products);
+		System.out.println("products after filter : " + products);
 		return "index";
 	}
 }

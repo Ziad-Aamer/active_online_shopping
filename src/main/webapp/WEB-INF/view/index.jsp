@@ -39,13 +39,23 @@
 <link type="text/css" rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/style.css" />
 
-<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-<!--[if lt IE 9]>
-		  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-		<![endif]-->
+<!-- add script to create range slider -->
+<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<link
+	href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"
+	rel="stylesheet" id="bootstrap-css">
+<script
+	src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
 
+<!-- <link rel="stylesheet" -->
+<!-- 	href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" -->
+<!-- 	media="screen"> -->
+<!-- <script -->
+<!-- 	src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script> -->
+<!-- <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" /> -->
+
+<!-- Javascript -->
 </head>
 
 <body>
@@ -76,7 +86,7 @@
 							aria-expanded="true">USD <i class="fa fa-caret-down"></i></a>
 							<ul class="custom-menu">
 								<li><a href="#">USD ($)</a></li>
-								<li><a href="#">EUR (€)</a></li>
+								<li><a href="#">EUR ()</a></li>
 							</ul></li>
 					</ul>
 				</div>
@@ -99,26 +109,42 @@
 
 					<!-- Search -->
 					<div class="header-search">
-						<form:form action="${pageContext.request.contextPath}/product/search"
+						<form:form
+							action="${pageContext.request.contextPath}/product/search"
 							modelAttribute="category" method="get">
 							<input class="input search-input" name="searchProducts"
 								type="text" placeholder="Enter your keyword">
 
-								<form:select path="categoryName">
-								<form:option value="NONE"> --SELECT--</form:option>
-									<c:forEach var="cat" items="${categories}">
-									<form:option value="${cat.categoryName}" label="${cat.categoryName}" />
-									</c:forEach>
-								</form:select>
+							<form:select path="categoryName">
+								<form:option value=""> --SELECT--</form:option>
+								<c:forEach var="cat" items="${categories}">
+									<form:option value="${cat.categoryName}"
+										label="${cat.categoryName}" />
+								</c:forEach>
+							</form:select>
 
-								<button type="submit" class="search-btn">
-									<i class="fa fa-search"></i>
-								</button>
-							
+							<button type="submit" class="search-btn">
+								<i class="fa fa-search"></i>
+							</button>
+
 						</form:form>
+
 					</div>
 					<!-- /Search -->
+					<div data-role="main" class="ui-content">
+						<form:form
+							action="${pageContext.request.contextPath}/product/filterByPrice" method="GET">
+							<div data-role="rangeslider">
+								<label for="price-min">Price:</label> <input type="range"
+									name="price-min" id="price-min" value="1000" min="0" max="5000">
+								<label for="price-max">Price:</label> <input type="range"
+									name="price-max" id="price-max" value="2000" min="0" max="5000">
+							</div>
+							<input type="submit" data-inline="true" value="Submit">
+						</form:form>
+					</div>
 				</div>
+
 				<div class="pull-right">
 					<ul class="header-btns">
 						<!-- Account -->
@@ -567,9 +593,10 @@
 											</a>
 										</div>
 									</div>
+				
 								</div>
 							</div>
-						</c:forEach>
+				</c:forEach>
 				<!-- /Product Single -->
 
 
@@ -688,9 +715,9 @@
 	<!-- /FOOTER -->
 
 	<!-- jQuery Plugins -->
-	<!-- 	<script src="http://code.jquery.com/jquery-3.2.1.min.js"></script> -->
-	<!-- 	<script -->
-	<!-- 		src="https://cdnjs.cloudflare.com/ajax/libs/jquery.sticky/1.0.4/jquery.sticky.js"></script> -->
+<!-- 		<script src="http://code.jquery.com/jquery-3.2.1.min.js"></script> -->
+<!-- 		<script -->
+<!-- 			src="https://cdnjs.cloudflare.com/ajax/libs/jquery.sticky/1.0.4/jquery.sticky.js"></script> -->
 
 	<script
 		src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
