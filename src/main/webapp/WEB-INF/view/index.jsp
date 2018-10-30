@@ -40,12 +40,12 @@
 	href="${pageContext.request.contextPath}/resources/css/style.css" />
 
 <!-- add script to create range slider -->
-<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-<link
-	href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"
-	rel="stylesheet" id="bootstrap-css">
-<script
-	src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<!-- <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script> -->
+<!-- <link -->
+<!-- 	href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" -->
+<!-- 	rel="stylesheet" id="bootstrap-css"> -->
+<!-- <script -->
+<!-- 	src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script> -->
 <!------ Include the above in your HEAD tag ---------->
 
 <!-- <link rel="stylesheet" -->

@@ -23,7 +23,7 @@ public class DataInitilizerBean {
 	    return allCats;
 	
 	allCats = categoryService.getCategoriesEAGER();
-	System.out.println("All Categoriessssss Initilized: ");
+	System.out.println("All Categoriessssss Initilized: \n\n");
 
 	return allCats;
     }

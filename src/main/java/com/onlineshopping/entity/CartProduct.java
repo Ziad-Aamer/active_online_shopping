@@ -45,12 +45,12 @@ public class CartProduct {
         this.cartProductId = cartProductId;
     }
 
-    public int getQunatity() {
+    public int getQuantity() {
         return quantity;
     }
 
-    public void setQunatity(int qunatity) {
-	quantity = qunatity;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public Cart getCart() {

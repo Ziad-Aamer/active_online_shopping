@@ -1,3 +1,5 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,7 +33,7 @@
 	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/cart/css/main.css">
 <!--===============================================================================================-->
 </head>
-<body class="animsition">
+<body class="animsition" onload="calcTotalProductPrice();">
 
 	<!-- Header -->
 	<header class="header1">
@@ -389,63 +391,40 @@
 			<!-- Cart item -->
 			<div class="container-table-cart pos-relative">
 				<div class="wrap-table-shopping-cart bgwhite">
-					<table class="table-shopping-cart">
-						<tr class="table-head">
-							<th class="column-1"></th>
-							<th class="column-2">Product</th>
-							<th class="column-3">Price</th>
-							<th class="column-4 p-l-70">Quantity</th>
-							<th class="column-5">Total</th>
-						</tr>
+					<form:form modelAttribute="ListOfCartProducts" >
+						<table class="table-shopping-cart">
+							<tr class="table-head">
+								<th class="column-1"></th>
+								<th class="column-2">Product</th>
+								<th class="column-3">Price</th>
+								<th class="column-4 p-l-70">Quantity</th>
+								<th class="column-5">Total</th>
+							</tr>
+							
+							<c:forEach var="cartProduct" items="${ListOfCartProducts}">
+								<tr class="table-row">
+									<td class="column-1">
+										<div class="cart-img-product b-rad-4 o-f-hidden">
+											<img src="${pageContext.request.contextPath}/resources/img/${cartProduct.product.url}" 
+												alt="IMG-PRODUCT">
+										</div>
+									</td>
+									<td class="column-2">${cartProduct.product.name}</td>
+									<td class="column-3 price-product">$${cartProduct.product.price}</td>
+									<td class="column-4">
+										<div class="flex-w bo5 of-hidden w-size17">
 
-						<tr class="table-row">
-							<td class="column-1">
-								<div class="cart-img-product b-rad-4 o-f-hidden">
-									<img src="images/item-10.jpg" alt="IMG-PRODUCT">
-								</div>
-							</td>
-							<td class="column-2">Men Tshirt</td>
-							<td class="column-3">$36.00</td>
-							<td class="column-4">
-								<div class="flex-w bo5 of-hidden w-size17">
-									<button class="btn-num-product-down color1 flex-c-m size7 bg8 eff2">
-										<i class="fs-12 fa fa-minus" aria-hidden="true"></i>
-									</button>
+											<input class=" m-text18 t-center num-product" type="number" name="num-product1" 
+												oninput="calcTotalProductPrice();"
+												value="${cartProduct.quantity}"/>
 
-									<input class="size8 m-text18 t-center num-product" type="number" name="num-product1" value="1">
-
-									<button class="btn-num-product-up color1 flex-c-m size7 bg8 eff2">
-										<i class="fs-12 fa fa-plus" aria-hidden="true"></i>
-									</button>
-								</div>
-							</td>
-							<td class="column-5">$36.00</td>
-						</tr>
-
-						<tr class="table-row">
-							<td class="column-1">
-								<div class="cart-img-product b-rad-4 o-f-hidden">
-									<img src="images/item-05.jpg" alt="IMG-PRODUCT">
-								</div>
-							</td>
-							<td class="column-2">Mug Adventure</td>
-							<td class="column-3">$16.00</td>
-							<td class="column-4">
-								<div class="flex-w bo5 of-hidden w-size17">
-									<button class="btn-num-product-down color1 flex-c-m size7 bg8 eff2">
-										<i class="fs-12 fa fa-minus" aria-hidden="true"></i>
-									</button>
-
-									<input class="size8 m-text18 t-center num-product" type="number" name="num-product2" value="1">
-
-									<button class="btn-num-product-up color1 flex-c-m size7 bg8 eff2">
-										<i class="fs-12 fa fa-plus" aria-hidden="true"></i>
-									</button>
-								</div>
-							</td>
-							<td class="column-5">$16.00</td>
-						</tr>
-					</table>
+										</div>
+									</td>
+									<td class="column-5 total-product-price" ></td>
+								</tr>
+							</c:forEach>
+						</table>
+					</form:form>
 				</div>
 			</div>
 
@@ -465,7 +444,7 @@
 
 				<div class="size10 trans-0-4 m-t-10 m-b-10">
 					<!-- Button -->
-					<button class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4">
+					<button id="update-cart-button" class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4">
 						Update Cart
 					</button>
 				</div>
@@ -754,6 +733,37 @@
 			minimumResultsForSearch: 20,
 			dropdownParent: $('#dropDownSelect2')
 		});
+		
+		//Ajax call to update cart in DB
+		$(document).ready(function(){
+		    $("#update-cart-button").click(function(){
+		        $.ajax({url:"" , success: function(){
+		            //$("#div1").html(result);
+		        	console.log("Ajax update cart called");
+		        
+		        }});
+		    });
+		});
+		
+		
+		function calcTotalProductPrice(){
+			
+			console.log("I am at calc");
+			var results = document.getElementsByClassName("total-product-price");
+			var prices = document.getElementsByClassName("price-product");
+			var quantities = document.getElementsByClassName("num-product");
+			
+			for(i=0;i<results.length;i++){
+				if(quantities[i].value<0){
+					results[i].innerHTML = "$0";
+					continue;
+				}
+				results[i].innerHTML = "$" + quantities[i].value * parseInt(prices[i].innerText.substring(1));
+				console.log("result = " + quantities[i].value +"*" + parseInt(prices[i].innerText.substring(1)));
+			}
+			console.log("I am at End Of calc"); 
+		}
+		
 	</script>
 <!--===============================================================================================-->
 	<script src="${pageContext.request.contextPath}/resources/css/cart/js/main.js"></script>

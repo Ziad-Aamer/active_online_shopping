@@ -1,5 +1,7 @@
 package com.onlineshopping.service;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,17 +31,27 @@ public class CartServiceImpl implements CartService {
 	
 	System.out.println(cartProduct);
 	if(cartProduct == null) {   
-	    cartProduct = new CartProduct(cart, product);
+	    cartProduct = new CartProduct();
 	    cartProduct.setCartProductId(new CartProductId(cart,product));
-//	    cartProduct.setCart(cart);
-//	    cartProduct.setProduct(product);
 	}
 	
-	cartProduct.setQunatity(cartProduct.getQunatity() + 1);
+	cartProduct.setCart(cart);
+	cartProduct.setProduct(product);
+	
+	cartProduct.setQuantity(cartProduct.getQuantity() + 1);
 	cartDao.addCartProduct(cartProduct);
+	cart.setTotalNumberOfProducts(cart.getTotalNumberOfProducts() + 1);
+	cart.setTotalPrice(cart.getTotalPrice() + product.getPrice());
 	
 	System.out.println(cartProduct);
 	
+    }
+    
+    @Transactional
+    @Override
+    public List<CartProduct> getProducts(int cartId) {
+	
+	return cartDao.getProducts(cartId);
     }
 
 }

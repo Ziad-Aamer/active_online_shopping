@@ -1,5 +1,7 @@
 package com.onlineshopping.dao;
 
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,22 +34,20 @@ public class CartDaoImpl implements CartDao {
     public CartProduct addCartProduct(CartProduct cp) {
 	
 	Session session = factory.getCurrentSession();
-	
-	if(cp.getQunatity() == 1) {
-	    
-	    Product product =cp.getProduct();
-	    session.saveOrUpdate(product);
-	    product.getCarts().add(cp);
-	    
-	    Cart cart = cp.getCart();
-	    session.saveOrUpdate(cart);
-	    cart.addCartProduct(cp);
-	}
-	    
-	
 	session.saveOrUpdate(cp);
 	
 	return cp;
+    }
+
+    
+    @Override
+    public List<CartProduct> getProducts(int cartId) {
+	Session session = factory.getCurrentSession();
+	
+	Cart persistCart = session.get(Cart.class, cartId);
+	List<CartProduct> products = persistCart.getProducts();
+	System.out.println(products);
+	return products;
     }
 
 }
