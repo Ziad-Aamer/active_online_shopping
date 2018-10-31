@@ -6,7 +6,7 @@
 
 <head>
 
-<title>Login Page</title>
+<title>forget password Page</title>
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -33,36 +33,26 @@
 			<div class="panel panel-info">
 
 				<div class="panel-heading">
-					<div class="panel-title">Sign In</div>
+					<div class="panel-title">Forget Password</div>
 				</div>
 
 				<div style="padding-top: 30px" class="panel-body">
 
 					<!-- Login Form -->
 					<form
-						action="${pageContext.request.contextPath}/authenticateTheUser"
-						method="POST" class="form-horizontal">
+						action="${pageContext.request.contextPath}/customer/forgotPassword"
+						method="get" class="form-horizontal">
 
 						<!-- Place for messages: error, alert etc ... -->
 						<div class="form-group">
 							<div class="col-xs-15">
 								<div>
-
-									<!-- Check for login error -->
-
-									<c:if test="${param.error != null}">
+									<c:if test="${emailNotExist != null}">
 
 										<div class="alert alert-danger col-xs-offset-1 col-xs-10">
-											Invalid username and password.</div>
+											${emailNotExist}</div>
 
 									</c:if>
-									<c:if test="${param.logout != null}">
-
-										<div class="alert alert-success col-xs-offset-1 col-xs-10">
-											You have been logged out.</div>
-
-									</c:if>
-
 								</div>
 							</div>
 						</div>
@@ -71,41 +61,19 @@
 						<div style="margin-bottom: 25px" class="input-group">
 							<span class="input-group-addon"><i
 								class="glyphicon glyphicon-user"></i></span> <input type="text"
-								name="username" placeholder="email" class="form-control">
-						</div>
-
-						<!-- Password -->
-						<div style="margin-bottom: 25px" class="input-group">
-							<span class="input-group-addon"><i
-								class="glyphicon glyphicon-lock"></i></span> <input type="password"
-								name="password" placeholder="password" class="form-control">
+								name="email" placeholder="Enter Your Email" class="form-control">
 						</div>
 
 						<!-- Login/Submit Button -->
 						<div style="margin-top: 10px" class="form-group">
 							<div class="col-sm-6 controls">
-								<button type="submit" class="btn btn-success">Login</button>
+								<button type="submit" class="btn btn-success">Submit</button>
 							</div>
 						</div>
-						<input type="hidden" name="${_csrf.parameterName }"
-							value="${_csrf.token }" />
 					</form>
 
 				</div>
 
-			</div>
-			<div>
-				<a
-					href="${pageContext.request.contextPath}/customer/showRegistrationForm"
-					class="btn btn-primary" role="button" aria-pressed="true">
-					Register New User </a>
-			</div>
-			<br>
-			<div>
-				<a
-					href="${pageContext.request.contextPath}/customer/showForgetPasswordForm"
-					class="btn btn-primary" role="button" aria-pressed="true">
-					forgot your password </a>
 			</div>
 		</div>
 

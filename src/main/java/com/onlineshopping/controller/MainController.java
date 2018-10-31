@@ -12,10 +12,13 @@ import com.onlineshopping.config.DataInitilizerBean;
 import com.onlineshopping.entity.Category;
 import com.onlineshopping.entity.Product;
 import com.onlineshopping.entity.SubCategory;
+import com.onlineshopping.service.UserService;
 
 @Controller
 public class MainController {
 
+	@Autowired
+	private UserService userService;
 	@Autowired
 	private DataInitilizerBean beanInitilizer;
 

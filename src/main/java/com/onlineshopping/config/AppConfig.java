@@ -18,11 +18,13 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+import com.onlineshopping.interceptor.LoggingInterceptor;
 
 @Configuration
 @EnableWebMvc
@@ -30,6 +32,11 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 @ComponentScan("com.onlineshopping")
 @PropertySource({ "classpath:persistence-mysql.properties", "classpath:security-persistence-mysql.properties" })
 public class AppConfig implements WebMvcConfigurer {
+
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(new LoggingInterceptor());
+	}
 
 	@Autowired
 	private Environment env;

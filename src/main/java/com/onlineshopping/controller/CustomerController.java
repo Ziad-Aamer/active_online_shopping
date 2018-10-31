@@ -20,9 +20,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.onlineshopping.entity.Customer;
 import com.onlineshopping.service.CustomerService;
+import com.onlineshopping.service.EmailService;
 import com.onlineshopping.service.UserService;
 import com.onlineshopping.social.SocialContext;
 
@@ -37,6 +39,10 @@ public class CustomerController {
 	private UserService userService;
 	@Autowired
 	private CustomerService customerService;
+	@Autowired
+	private EmailService emailService;
+//	@Autowired
+//	public SimpleMailMessage template;
 
 	private Logger logger = Logger.getLogger(getClass().getName());
 
@@ -54,6 +60,63 @@ public class CustomerController {
 		theModel.addAttribute("customer", new Customer());
 		// need to update the name of the page returned
 		return "customer-registration";
+	}
+
+	@GetMapping("/showForgetPasswordForm")
+	public String showForgetPasswordForm(Model theModel) {
+
+		theModel.addAttribute("customer", new Customer());
+		// need to update the name of the page returned
+		return "forgot-password";
+	}
+
+	@GetMapping("/forgotPassword")
+	public String forgotPassword(HttpServletRequest request, @RequestParam("email") String email, Model model) {
+		String host = "http://localhost:8080";
+		String path = host + request.getContextPath() + "/customer/newPasswordForm?email=" + email;
+		// System.out.println("context path in forget password methodddd!!!!!!!!! " +
+		// path);
+		System.out.println("emaail from forgot password form : " + email);
+		boolean exist = userService.doesUserExists(email);
+		if (!exist) {
+			model.addAttribute("emailNotExist", "This email not Exist!");
+		} else {
+			System.out.println("email exist and now sending email..............");
+			// org.springframework.security.core.userdetails.User user =
+			// userService.findUesrByEmail(email);
+			// System.out.println("your password :" + user.getPassword());
+			String url = "please click the link below to continue your process: \n\n <a href='" + path
+					+ "'>Create New Password</a>";
+			System.out.println("url which sent in email body : " + url);
+			// String url = "testtttt";
+			// String text = String.format(template.getText(), url);
+			emailService.sendMimeMessage(email, "Confirmation Email", url);
+			System.out.println("email sent!!!!");
+		}
+		return "user-login";
+	}
+
+	@GetMapping("/newPasswordForm")
+	public String createNewPasswordForm(@RequestParam("email") String email, Model model) {
+		System.out.println("your email is : " + email);
+		model.addAttribute("email", email);
+		return "new-password";
+	}
+
+	@GetMapping("/updatePassword")
+	public String createNewPassword(@RequestParam("email") String email, @RequestParam("password") String password,
+			@RequestParam("confirmPassword") String confirmPassword, Model model) {
+		System.out.println(
+				"password and confirm password : " + password + " confirm: " + confirmPassword + "  email : " + email);
+		if (!password.equals(confirmPassword)) {
+			model.addAttribute("notMatch", "password dosen't matches!!");
+			model.addAttribute("email", email);
+			return "new-password";
+		} else {
+			System.out.println("UPDATE PASS!!");
+			userService.updatePassword(email, password);
+		}
+		return "user-login";
 	}
 
 	@RequestMapping(value = "/posts", method = RequestMethod.GET)

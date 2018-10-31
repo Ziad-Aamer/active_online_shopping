@@ -11,34 +11,35 @@ import com.onlineshopping.entity.Cart;
 import com.onlineshopping.entity.Customer;
 
 @Repository
-public class CustomerDaoImpl implements CustomerDao{
-	
-	@Autowired 
+public class CustomerDaoImpl implements CustomerDao {
+
+	@Autowired
 	private SessionFactory sessionFactory;
-	
+
 	public void addCustomer(Customer customer) {
-		
+
 		Session session = sessionFactory.getCurrentSession();
-		Cart cart = new Cart(0,0);
+		Cart cart = new Cart(0, 0);
 		customer.setCart(cart);
-		
+
 		session.persist(customer);
-		
+
 		System.out.println("Customer added with id:" + customer.getId());
 	}
-	
+
 	@Override
 	public Customer getCustomer(String email) {
-	    
-    	    Session session = sessionFactory.getCurrentSession();
-    	    Customer customer = null;
-    	    try {
-    		customer =session.createQuery("from Customer c where c.email=:email",Customer.class)
-    	    		.setParameter("email", email).getSingleResult();
-    	    }catch(NoResultException e) {
-    		
-    	    }
-    	    System.out.println(customer);
-    	    return customer;
+
+		Session session = sessionFactory.getCurrentSession();
+		Customer customer = null;
+		try {
+			customer = session.createQuery("from Customer c where c.email=:email", Customer.class)
+					.setParameter("email", email).getSingleResult();
+		} catch (NoResultException e) {
+
+		}
+		System.out.println(customer);
+		return customer;
 	}
+
 }

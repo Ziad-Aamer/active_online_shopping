@@ -9,7 +9,7 @@
 	<packaging>war</packaging>
 
 	<properties>
-		<springframework.version>5.1.1.RELEASE</springframework.version>
+		<springframework.version>5.1.2.RELEASE</springframework.version>
 		<springsecurity.version>5.1.1.RELEASE</springsecurity.version>
 		<spring-social.version>1.1.6.RELEASE</spring-social.version>
 		<org.springframework.social-facebook-version>2.0.3.RELEASE</org.springframework.social-facebook-version>
@@ -25,11 +25,23 @@
 	</properties>
 
 	<dependencies>
+<!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-jpa -->
+<dependency>
+    <groupId>org.springframework.data</groupId>
+    <artifactId>spring-data-jpa</artifactId>
+    <version>2.1.2.RELEASE</version>
+</dependency>
 
 		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
 			<version>${springframework.version}</version>
 		</dependency>
 
@@ -57,14 +69,14 @@
 			<artifactId>spring-security-config</artifactId>
 			<version>${springsecurity.version}</version>
 		</dependency>
-		
+
 		<!-- Add Spring Security Taglibs support -->
 		<dependency>
-		    <groupId>org.springframework.security</groupId>
-		    <artifactId>spring-security-taglibs</artifactId>
-		    <version>${springsecurity.version}</version>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-taglibs</artifactId>
+			<version>${springsecurity.version}</version>
 		</dependency>
-		
+
 		<!-- Spring Social -->
 		<dependency>
 			<groupId>org.springframework.social</groupId>
@@ -84,8 +96,8 @@
 			<version>${org.springframework.social-facebook-version}</version>
 		</dependency>
 		<!-- Add Jackson for JSON converters -->
-	
-	<dependency>
+
+		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
 			<version>${jackson.version}</version>
@@ -146,14 +158,14 @@
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>3.8.1</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<!-- Hibernate Validator -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -161,34 +173,39 @@
 			<version>6.0.13.Final</version>
 		</dependency>
 
+		<!-- Java Mail Dependency -->
+		<dependency>
 
-		<!-- Logging -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.slf4j</groupId> -->
-<!-- 			<artifactId>slf4j-api</artifactId> -->
-<!-- 			<version>${org.slf4j-version}</version> -->
-<!-- 		</dependency> -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.slf4j</groupId> -->
-<!-- 			<artifactId>jcl-over-slf4j</artifactId> -->
-<!-- 			<version>${org.slf4j-version}</version> -->
-<!-- 			<scope>runtime</scope> -->
-<!-- 		</dependency> -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.slf4j</groupId> -->
-<!-- 			<artifactId>slf4j-log4j12</artifactId> -->
-<!-- 			<version>${org.slf4j-version}</version> -->
-<!-- 			<scope>runtime</scope> -->
-<!-- 		</dependency> -->
+			<groupId>javax.mail</groupId>
+			<artifactId>javax.mail-api</artifactId>
+			<version>1.5.5</version>
+		</dependency>
 
-		<!-- @Inject -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>javax.inject</groupId> -->
-<!-- 			<artifactId>javax.inject</artifactId> -->
-<!-- 			<version>1</version> -->
-<!-- 		</dependency> -->
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4.7</version>
+		</dependency>
 
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.2.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.5</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>3.0.5.RELEASE</version>
+		</dependency>
 	</dependencies>
+
 
 	<build>
 
