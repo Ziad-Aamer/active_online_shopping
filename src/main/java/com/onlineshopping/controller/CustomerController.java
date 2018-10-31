@@ -41,8 +41,6 @@ public class CustomerController {
 	private CustomerService customerService;
 	@Autowired
 	private EmailService emailService;
-//	@Autowired
-//	public SimpleMailMessage template;
 
 	private Logger logger = Logger.getLogger(getClass().getName());
 
@@ -74,31 +72,23 @@ public class CustomerController {
 	public String forgotPassword(HttpServletRequest request, @RequestParam("email") String email, Model model) {
 		String host = "http://localhost:8080";
 		String path = host + request.getContextPath() + "/customer/newPasswordForm?email=" + email;
-		// System.out.println("context path in forget password methodddd!!!!!!!!! " +
-		// path);
-		System.out.println("emaail from forgot password form : " + email);
+
 		boolean exist = userService.doesUserExists(email);
 		if (!exist) {
 			model.addAttribute("emailNotExist", "This email not Exist!");
 		} else {
-			System.out.println("email exist and now sending email..............");
-			// org.springframework.security.core.userdetails.User user =
-			// userService.findUesrByEmail(email);
-			// System.out.println("your password :" + user.getPassword());
-			String url = "please click the link below to continue your process: \n\n <a href='" + path
+
+			String url = "please click the link below to continue your process: \n\n\n <a href='" + path
 					+ "'>Create New Password</a>";
-			System.out.println("url which sent in email body : " + url);
-			// String url = "testtttt";
-			// String text = String.format(template.getText(), url);
+
 			emailService.sendMimeMessage(email, "Confirmation Email", url);
-			System.out.println("email sent!!!!");
+			logger.info("email sent!!!!");
 		}
-		return "user-login";
+		return "check-email";
 	}
 
 	@GetMapping("/newPasswordForm")
 	public String createNewPasswordForm(@RequestParam("email") String email, Model model) {
-		System.out.println("your email is : " + email);
 		model.addAttribute("email", email);
 		return "new-password";
 	}
@@ -113,7 +103,6 @@ public class CustomerController {
 			model.addAttribute("email", email);
 			return "new-password";
 		} else {
-			System.out.println("UPDATE PASS!!");
 			userService.updatePassword(email, password);
 		}
 		return "user-login";
@@ -121,16 +110,10 @@ public class CustomerController {
 
 	@RequestMapping(value = "/posts", method = RequestMethod.GET)
 	public String showPostsForUser(HttpServletRequest request, HttpServletResponse response, Model model) {
-		System.out.println(
-				"in online shopping project inside showPostsForUser postsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss");
-
 		String nextView;
 
 		if (socialContext.isSignedIn(request, response)) {
 			System.out.println("\n==============>logged in Cool!");
-
-			// List<Post> posts = retrievePosts();
-			// model.addAttribute("posts", posts);
 			nextView = "show-posts";
 		} else {
 			System.out.println("\n==============> not logged in yet ");
