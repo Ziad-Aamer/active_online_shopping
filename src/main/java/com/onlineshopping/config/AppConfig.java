@@ -18,13 +18,12 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+//import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
-import com.onlineshopping.interceptor.LoggingInterceptor;
 
 @Configuration
 @EnableWebMvc
@@ -33,10 +32,10 @@ import com.onlineshopping.interceptor.LoggingInterceptor;
 @PropertySource({ "classpath:persistence-mysql.properties", "classpath:security-persistence-mysql.properties" })
 public class AppConfig implements WebMvcConfigurer {
 
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(new LoggingInterceptor());
-	}
+//	@Override
+//	public void addInterceptors(InterceptorRegistry registry) {
+//		registry.addInterceptor(new LoggingInterceptor());
+//	}
 
 	@Autowired
 	private Environment env;
@@ -55,6 +54,28 @@ public class AppConfig implements WebMvcConfigurer {
 
 		return viewResolver;
 	}
+
+//	@Bean
+//	public SimpleMappingExceptionResolver exceptionResolver() {
+//		SimpleMappingExceptionResolver exceptionResolver = new SimpleMappingExceptionResolver();
+//
+//		Properties exceptionMappings = new Properties();
+//
+//		exceptionMappings.put("net.petrikainulainen.spring.testmvc.todo.exception.TodoNotFoundException", "error/404");
+//		exceptionMappings.put("java.lang.Exception", "error/error");
+//		exceptionMappings.put("java.lang.RuntimeException", "error/error");
+//
+//		exceptionResolver.setExceptionMappings(exceptionMappings);
+//
+//		Properties statusCodes = new Properties();
+//
+//		statusCodes.put("error/404", "404");
+//		statusCodes.put("error/error", "500");
+//
+//		exceptionResolver.setStatusCodes(statusCodes);
+//
+//		return exceptionResolver;
+//	}
 
 	@Bean
 	public DataSource securityDataSource() {
