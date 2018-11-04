@@ -76,6 +76,8 @@ public class CustomerController {
 		boolean exist = userService.doesUserExists(email);
 		if (!exist) {
 			model.addAttribute("emailNotExist", "This email not Exist!");
+			model.addAttribute("customer", new Customer());
+			return "forgot-password";
 		} else {
 
 			String url = "please click the link below to continue your process: \n\n\n <a href='" + path
@@ -108,25 +110,6 @@ public class CustomerController {
 		return "user-login";
 	}
 
-	@RequestMapping(value = "/posts", method = RequestMethod.GET)
-	public String showPostsForUser(HttpServletRequest request, HttpServletResponse response, Model model) {
-		String nextView;
-
-		if (socialContext.isSignedIn(request, response)) {
-			System.out.println("\n==============>logged in Cool!");
-			nextView = "show-posts";
-		} else {
-			System.out.println("\n==============> not logged in yet ");
-			nextView = "signin";
-		}
-		Facebook facebook = socialContext.getFacebook();
-		String[] fields = { "id", "email", "first_name", "last_name" };
-		User userProfile = facebook.fetchObject("me", User.class, fields);
-		logger.info("\n==========> email facebook: " + userProfile.getEmail() + " firstName: "
-				+ userProfile.getFirstName());
-		return nextView;
-	}
-
 	@PostMapping("/processRegistrationForm")
 	public String processRegistrationForm(@Valid @ModelAttribute("customer") Customer customer,
 			BindingResult theBindingResult, Model theModel) {
@@ -150,23 +133,42 @@ public class CustomerController {
 		logger.info("Customer validated: " + email);
 
 		// call addUser function to add the customer into users table
-		boolean userExists = userService.addUser(customer, "CUSTOMER");
-
-		if (userExists) {
-			theModel.addAttribute("customer", new Customer());
-			theModel.addAttribute("registrationError", "Email already exists.");
-
-			logger.warning("Email already exists.");
-
-			return "customer-registration";
-		}
-
-		logger.info("Successfully created user: " + email);
-
-		// add Customer to DB
-		customerService.addCustomer(customer);
+//		boolean userExists = userService.addUser(customer, "CUSTOMER");
+//
+//		if (userExists) {
+//			theModel.addAttribute("customer", new Customer());
+//			theModel.addAttribute("registrationError", "Email already exists.");
+//
+//			logger.warning("Email already exists.");
+//
+//			return "customer-registration";
+//		}
+//
+//		logger.info("Successfully created user: " + email);
+//
+//		// add Customer to DB
+//		customerService.addCustomer(customer);
 		return "redirect:/user/showMyLoginPage";
 
+	}
+
+	@RequestMapping(value = "/posts", method = RequestMethod.GET)
+	public String showPostsForUser(HttpServletRequest request, HttpServletResponse response, Model model) {
+		String nextView;
+
+		if (socialContext.isSignedIn(request, response)) {
+			System.out.println("\n==============>logged in Cool!");
+			nextView = "show-posts";
+		} else {
+			System.out.println("\n==============> not logged in yet ");
+			nextView = "signin";
+		}
+		Facebook facebook = socialContext.getFacebook();
+		String[] fields = { "id", "email", "first_name", "last_name" };
+		User userProfile = facebook.fetchObject("me", User.class, fields);
+		logger.info("\n==========> email facebook: " + userProfile.getEmail() + " firstName: "
+				+ userProfile.getFirstName());
+		return nextView;
 	}
 
 }

@@ -35,6 +35,7 @@ public class ProductController {
 		} else {
 			selectedCategories = beanInitializer.getCategoriesEAGER();
 		}
+
 		List<Product> products = new ArrayList<>();
 		for (Category category : selectedCategories) {
 
@@ -49,7 +50,6 @@ public class ProductController {
 			}
 		}
 
-		System.out.println("all products based on search !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + products);
 		List<Category> categoreis = beanInitializer.getCategoriesEAGER();
 		model.addAttribute("category", new Category());
 		model.addAttribute("categories", categoreis);
@@ -81,7 +81,6 @@ public class ProductController {
 		model.addAttribute("category", new Category());
 		model.addAttribute("categories", allCategories);
 		model.addAttribute("products", products);
-		System.out.println("products after filter : " + products);
 		return "index";
 	}
 }

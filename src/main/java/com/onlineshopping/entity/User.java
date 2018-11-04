@@ -20,12 +20,12 @@ public class User {
 	private String firstName;
 	@Column(name = "last_name")
 	private String lastName;
-	@NotNull(message="required")
-	@Email(message="Enter a valid name")
+	@NotNull(message = "required")
+	@Email(message = "Enter a valid name")
 	private String email;
-	
-	@NotNull(message="required")
-	@Size(min=6, message="size must 6 or more characters")
+
+	@NotNull(message = "required")
+	@Size(min = 6, message = "size must 6 or more characters")
 	@Transient
 	private String password;
 	@Column(name = "phone_number")
@@ -42,8 +42,7 @@ public class User {
 		this.password = password;
 		this.phoneNumber = phoneNumber;
 	}
-	
-	
+
 	public int getId() {
 		return id;
 	}
@@ -90,10 +89,8 @@ public class User {
 
 	@Override
 	public String toString() {
-	    return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
-		    + ", password=" + password + ", phoneNumber=" + phoneNumber + "]";
+		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
+				+ ", password=" + password + ", phoneNumber=" + phoneNumber + "]";
 	}
-	
-	
 
 }

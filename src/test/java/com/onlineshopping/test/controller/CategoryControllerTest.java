@@ -1,5 +1,6 @@
 package com.onlineshopping.test.controller;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -25,59 +26,60 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.onlineshopping.config.AppConfig;
-import com.onlineshopping.config.DataInitilizerBean;
 import com.onlineshopping.entity.Category;
+import com.onlineshopping.service.CategoryService;
 import com.onlineshopping.test.context.TestContext;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { TestContext.class, AppConfig.class })
 @WebAppConfiguration
-public class MainControllerTest {
+public class CategoryControllerTest {
 
 	private MockMvc mockMvc;
 
 	@Autowired
-	private DataInitilizerBean beanInitializer;
+	private CategoryService categoryService;
 
 	@Autowired
 	private WebApplicationContext webApplicationContext;
 
 	@Before
 	public void setUp() {
-		Mockito.reset(beanInitializer);
+		Mockito.reset(categoryService);
 //.addFilter(springSecurityFilterChain)
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 	}
 
 	@Test
-	public void findAllCategories_ShouldAddCategoriesEntriesToModelAndRenderTodoListView() throws Exception {
+	public void getCategories_ShouldGetCategoriesEntriesToModelAndRenderTodoListView() throws Exception {
 
-		System.out.println("now inside findAll Categories Method Test!!!!!");
+		System.out.println("now inside get Categories Method Test!!!!!");
 		List<Category> categories = new ArrayList<>();
 		Category cat = new Category();
 		cat.setCategoryName("test1");
 		cat.setId(1);
 		categories.add(cat);
-
-		categories = beanInitializer.getCategoriesEAGER();
-
-		when(beanInitializer.getCategoriesEAGER()).thenReturn(categories);
-		System.out.println("length of categorirs: " + categories.size());
-		mockMvc.perform(get("/")).andExpect(status().isOk()).andExpect(view().name("index"))
+		when(categoryService.getCategoriesLAZY()).thenReturn(categories);
+		System.out.println("all categories size inside get categories: " + categories.size());
+		mockMvc.perform(get("/category/search")).andExpect(status().isOk()).andExpect(view().name("index"))
 				.andExpect(forwardedUrl("/WEB-INF/view/index.jsp"));
-		// .andExpect(model().attribute("categories", hasSize(1)));
-		// .andExpect(model().attribute("categories",
-		// hasItem(allOf(hasProperty("categoryName", is("test1"))))));
+		assertEquals(categories.size(), 1);
 
-		verify(beanInitializer, times(1)).getCategoriesEAGER();
-		verifyNoMoreInteractions(beanInitializer);
+		verify(categoryService, times(1)).getCategoriesLAZY();
+		verifyNoMoreInteractions(categoryService);
+	}
+
+	@Test
+	public void getCategories_ShouldNotGetCategoriesEntries() throws Exception {
+
+		List<Category> categories = new ArrayList<>();
+
+		when(categoryService.getCategoriesLAZY()).thenReturn(categories);
+		System.out.println("all categories size inside get categories: " + categories.size());
+		mockMvc.perform(get("/category/search")).andExpect(status().isOk()).andExpect(view().name("index"))
+				.andExpect(forwardedUrl("/WEB-INF/view/index.jsp"));
+		assertEquals(categories.size(), 0);
+		verify(categoryService, times(1)).getCategoriesLAZY();
+		verifyNoMoreInteractions(categoryService);
 	}
 }
-
-//mockMvc.perform(get("/")).andExpect(status().isOk()).andExpect(view().name("/index"))
-//.andExpect(forwardedUrl("/WEB-INF/view/index.jsp")).andExpect(model().attribute("todos", hasSize(2)))
-//.andExpect(model().attribute("todos",
-//		hasItem(allOf(hasProperty("id", is(1L)), hasProperty("description", is("Lorem ipsum")),
-//				hasProperty("title", is("Foo"))))))
-//.andExpect(model().attribute("todos", hasItem(allOf(hasProperty("id", is(2L)),
-//		hasProperty("description", is("Lorem ipsum")), hasProperty("title", is("Bar"))))));

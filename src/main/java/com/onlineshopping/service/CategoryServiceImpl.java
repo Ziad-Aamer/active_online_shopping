@@ -23,23 +23,22 @@ public class CategoryServiceImpl implements CategoryService {
 
 		return categoryDao.getCategories();
 	}
-	
+
 	@Transactional
 	@Override
 	public List<Category> getCategoriesEAGER() {
-	    
-	    	List<Category> cats = categoryDao.getCategories();
-	    	
-	    	for(Category c:cats) {
-	    	    List<SubCategory> subCats = c.getSubCategories();
-	    	    System.out.println("All sub-Cat for Category: " + c.getCategoryName() + " =>" + subCats);
-	    	    for(SubCategory sub: subCats) {
-	    		System.out.println("All Products for Sub-Cat: " + 
-	    				sub.getName() + " =>" + sub.getProducts());
-	    	    }
-	    	}
-	    	    
+
+		List<Category> cats = categoryDao.getCategories();
+
+		for (Category c : cats) {
+			List<SubCategory> subCats = c.getSubCategories();
+			System.out.println("All sub-Cat for Category: " + c.getCategoryName() + " =>" + subCats);
+			for (SubCategory sub : subCats) {
+				System.out.println("All Products for Sub-Cat: " + sub.getName() + " =>" + sub.getProducts());
+			}
+		}
+
 		return cats;
 	}
-	
+
 }
