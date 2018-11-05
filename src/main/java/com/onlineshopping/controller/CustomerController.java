@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.onlineshopping.entity.Customer;
 import com.onlineshopping.service.CustomerService;
@@ -29,6 +30,7 @@ import com.onlineshopping.service.UserService;
 import com.onlineshopping.social.SocialContext;
 
 @Controller
+@SessionAttributes("customer")
 @RequestMapping("/customer")
 public class CustomerController {
 
@@ -83,7 +85,7 @@ public class CustomerController {
 			String url = "please click the link below to continue your process: \n\n\n <a href='" + path
 					+ "'>Create New Password</a>";
 
-			emailService.sendMimeMessage(email, "Confirmation Email", url);
+			// emailService.sendMimeMessage(email, "Confirmation Email", url);
 			logger.info("email sent!!!!");
 		}
 		return "check-email";
@@ -121,7 +123,6 @@ public class CustomerController {
 		// form validation
 		// update the validation error messages for the wrong email and password format
 		if (theBindingResult.hasErrors()) {
-
 			theModel.addAttribute("customer", new Customer());
 			theModel.addAttribute("registrationError", "email/password must be valid.");
 
@@ -131,7 +132,7 @@ public class CustomerController {
 		}
 
 		logger.info("Customer validated: " + email);
-
+		// return "customer-registration";
 		// call addUser function to add the customer into users table
 //		boolean userExists = userService.addUser(customer, "CUSTOMER");
 //
@@ -143,11 +144,11 @@ public class CustomerController {
 //
 //			return "customer-registration";
 //		}
-//
-//		logger.info("Successfully created user: " + email);
-//
-//		// add Customer to DB
-//		customerService.addCustomer(customer);
+
+		logger.info("Successfully created user: " + email);
+
+		// add Customer to DB
+		// customerService.addCustomer(customer);
 		return "redirect:/user/showMyLoginPage";
 
 	}

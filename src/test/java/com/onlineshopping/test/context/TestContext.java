@@ -19,4 +19,9 @@ public class TestContext {
 	public CategoryService categoryService() {
 		return Mockito.mock(CategoryService.class);
 	}
+//
+//	@Bean
+//	public Validator validatorFactory() {
+//		return new LocalValidatorFactoryBean();
+//	}
 }
