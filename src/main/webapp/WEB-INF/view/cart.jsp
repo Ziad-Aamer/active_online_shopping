@@ -383,6 +383,7 @@
 										</div>
 									</td>
 									<td class="column-5 total-product-price"></td>
+		<td><input type="submit" value="delete" onclick="if (confirm('Are you sure you want to delete?')) form.action='${pageContext.request.contextPath}/cart/removeProduct/${cartProduct.product.id}/'; else return false;" /></td>
 								</tr>
 							</c:forEach>
 						</table>

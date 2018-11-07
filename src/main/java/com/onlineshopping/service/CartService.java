@@ -9,6 +9,8 @@ public interface CartService {
 
 	void addProduct(Cart cart, int productId);
 
+	void removeProduct(Cart cart, int productId);
+
 	List<CartProduct> getProducts(int cartId);
 
 	public CartProduct updateCartProduct(CartProduct cp);

@@ -54,4 +54,11 @@ public class CartDaoImpl implements CartDao {
 		session.saveOrUpdate(cp);
 		return cp;
 	}
+
+	@Override
+	public void removeCartProduct(CartProductId id) {
+		Session session = factory.getCurrentSession();
+		CartProduct cartProduct = session.get(CartProduct.class, id);
+		session.delete(cartProduct);
+	}
 }

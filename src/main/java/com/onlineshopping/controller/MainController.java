@@ -38,9 +38,6 @@ public class MainController {
 	@GetMapping("/")
 	public String gotoIndex(HttpServletRequest request, Model model) {
 
-		Customer customer = (Customer) request.getSession().getAttribute("loggedinUser");
-		Cart cart = customer.getCart();
-
 		List<Category> categoreis = beanInitilizer.getCategoriesEAGER();
 
 		List<Product> products = new ArrayList<>();
@@ -52,9 +49,14 @@ public class MainController {
 			}
 		}
 
-		List<CartProduct> cp = cartService.getProducts(cart.getId());
+		Customer customer = (Customer) request.getSession().getAttribute("loggedinUser");
 
-		model.addAttribute("cartList", cp.size());
+		if (customer != null) {
+			Cart cart = customer.getCart();
+			List<CartProduct> cp = cartService.getProducts(cart.getId());
+			model.addAttribute("cartList", cp.size());
+		}
+
 		model.addAttribute("category", new Category());
 		model.addAttribute("categories", categoreis);
 		model.addAttribute("products", products);

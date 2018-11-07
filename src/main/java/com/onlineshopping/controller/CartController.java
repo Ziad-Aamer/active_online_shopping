@@ -63,6 +63,16 @@ public class CartController {
 		return "cart";
 	}
 
+	@PostMapping("/removeProduct/{productId}")
+	public String removeProduct(@PathVariable int productId, HttpServletRequest request) {
+
+		System.out.println("product id in cart controller to deleteeeeeeeeeeeeeeeeee : " + productId);
+		Customer customer = (Customer) request.getSession().getAttribute("loggedinUser");
+		Cart cart = customer.getCart();
+		cartService.removeProduct(cart, productId);
+		return "redirect:/cart/showCart";
+	}
+
 	@GetMapping("/addProduct/{productId}")
 	public String addProduct(@PathVariable int productId, HttpServletRequest request) {
 

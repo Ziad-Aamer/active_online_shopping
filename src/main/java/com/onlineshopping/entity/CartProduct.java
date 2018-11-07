@@ -9,71 +9,69 @@ import javax.persistence.MapsId;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="cart_product")
+@Table(name = "cart_product")
 public class CartProduct {
-    
-    
-    @EmbeddedId
-    private CartProductId cartProductId;
-    private int quantity;
-    
-    @ManyToOne(fetch = FetchType.LAZY, cascade =CascadeType.ALL)
-    @MapsId("cart_id")
-    private Cart cart;
-	
-    @ManyToOne(fetch = FetchType.LAZY, cascade =CascadeType.ALL)
-    @MapsId("product_id")
-    private Product product;
 
-    
-    public CartProduct() {
+	@EmbeddedId
+	private CartProductId cartProductId;
+	private int quantity;
 
-    }
+	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE,
+			CascadeType.REFRESH })
+	@MapsId("cart_id")
+	private Cart cart;
 
-    public CartProduct(Cart cart, Product product) {
-	super();
-	this.cart = cart;
-	this.product = product;
-	this.quantity = 0;
-    }
-    
-    public CartProductId getCartProductId() {
-        return cartProductId;
-    }
+	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE,
+			CascadeType.REFRESH })
+	@MapsId("product_id")
+	private Product product;
 
-    public void setCartProductId(CartProductId cartProductId) {
-        this.cartProductId = cartProductId;
-    }
+	public CartProduct() {
 
-    public int getQuantity() {
-        return quantity;
-    }
+	}
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
+	public CartProduct(Cart cart, Product product) {
+		super();
+		this.cart = cart;
+		this.product = product;
+		this.quantity = 0;
+	}
 
-    public Cart getCart() {
-        return cart;
-    }
+	public CartProductId getCartProductId() {
+		return cartProductId;
+	}
 
-    public void setCart(Cart cart) {
-        this.cart = cart;
-    }
+	public void setCartProductId(CartProductId cartProductId) {
+		this.cartProductId = cartProductId;
+	}
 
-    public Product getProduct() {
-        return product;
-    }
+	public int getQuantity() {
+		return quantity;
+	}
 
-    public void setProduct(Product product) {
-        this.product = product;
-    }
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
 
-    @Override
-    public String toString() {
-	return "CartProduct [cartProductId=" + cartProductId + ", quantity=" + quantity + "]";
-    }
-    
-    
+	public Cart getCart() {
+		return cart;
+	}
+
+	public void setCart(Cart cart) {
+		this.cart = cart;
+	}
+
+	public Product getProduct() {
+		return product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+
+	@Override
+	public String toString() {
+		return "CartProduct [cartProductId=" + cartProductId + ", quantity=" + quantity + "]";
+	}
 
 }
