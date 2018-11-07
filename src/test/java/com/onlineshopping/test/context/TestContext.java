@@ -1,8 +1,11 @@
 package com.onlineshopping.test.context;
 
+import javax.validation.Validator;
+
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import com.onlineshopping.config.DataInitilizerBean;
 import com.onlineshopping.service.CategoryService;
@@ -19,9 +22,9 @@ public class TestContext {
 	public CategoryService categoryService() {
 		return Mockito.mock(CategoryService.class);
 	}
-//
-//	@Bean
-//	public Validator validatorFactory() {
-//		return new LocalValidatorFactoryBean();
-//	}
+
+	@Bean
+	public Validator validator() {
+		return new LocalValidatorFactoryBean();
+	}
 }

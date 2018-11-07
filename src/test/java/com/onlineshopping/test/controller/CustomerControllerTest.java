@@ -1,25 +1,36 @@
 package com.onlineshopping.test.controller;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
+import java.util.Random;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
 import com.onlineshopping.config.AppConfig;
+import com.onlineshopping.entity.Customer;
 import com.onlineshopping.test.context.TestContext;
+import com.onlineshopping.test.context.TestUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { TestContext.class, AppConfig.class })
@@ -40,6 +51,7 @@ public class CustomerControllerTest {
 	@Before
 	public void setUp() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+		// when(requestValidatorMock.supports(any())).thenReturn(true);
 	}
 
 	// TODO: i need to solve securityException , when add hasProperty attritbute!!!
@@ -96,56 +108,82 @@ public class CustomerControllerTest {
 				.andExpect(forwardedUrl("/WEB-INF/view/user-login.jsp"));
 	}
 
-//	@Test
-//	public void processRegistrationForm_ShouldValidateFormInputsAndRenderRegistrationForm() throws Exception {
-//		Customer customer = new Customer();
-//		customer.setEmail("khaled@gmail.com");
-//		customer.setPassword("12");
+	@Test
+	public void processRegistrationForm_ShouldGetErrorForFormInputsAndRenderRegistrationForm() throws Exception {
+		Customer customer = new Customer();
+		customer.setEmail("testEmail");
+		customer.setPassword("123");
+		MockHttpServletRequest request = new MockHttpServletRequest("POST", "/customer/processRegistrationForm");
+		request.setParameter("email", "testEmail");
+		request.setParameter("password", "123");
+		WebDataBinder binder = new WebDataBinder(customer);
+		binder.setValidator(validator);
 
-//		MockHttpServletRequest request = new MockHttpServletRequest("POST","/browser/create");
-//		MockHttpServletResponse response = new MockHttpServletResponse();
-//		request.addParameter("customer",) ;//whatever is required to create Browser..
-//		ModelAndView modelAndView = handlerAdapter.handle(httpRequest, response, handler);
-//		
-//		MockHttpServletRequest request = new MockHttpServletRequest();
-//
-//	    BindingResult errors = new DataBinder(customer).getBindingResult();
-//	    // controller is initialized in @Before method
-//	    controller.add(customer, errors, request);
-//	    assertEquals(1, errors.getErrorCount());
-//param("customer.email", "testtest@gmail.com")
-// .param("customer.password", "123321").param("firstName", "khaled")
+		binder.bind(new MutablePropertyValues(request.getParameterMap()));
 
-//		mockMvc.perform(post("/customer/processRegistrationForm").contentType(MediaType.APPLICATION_FORM_URLENCODED)
-//				.content(TestUtil.convertObjectToFormUrlEncodedBytes(customer)).sessionAttr("customer", customer))
-//				.andExpect(status().isOk()).andExpect(view().name("customer-registration"))
-//				.andExpect(forwardedUrl("/WEB-INF/view/customer-registration.jsp"));
-//		// .andExpect(model().attributeHasFieldErrors("customer", "password"))
-	// .andExpect(model().attributeHasFieldErrors("customer", "email"));
-	// .andExpect(model().attribute("customer", hasProperty("email", null)));
-	// }
+		binder.getValidator().validate(binder.getTarget(), binder.getBindingResult());
+		assertEquals(2, binder.getBindingResult().getErrorCount());
 
-//	@Test
-//	public void processRegistrationForm_ShouldAcceptFormInputs() throws Exception {
-//		Customer customer = new Customer();
-//		customer.setEmail("aa@gmail.com");
-//		customer.setPassword("1234567");
-//		MockHttpServletRequest request = new MockHttpServletRequest("POST", "/customer/processRegistrationForm");
-//		// request.setParameter("email", "testEmail");
-//
-//		WebDataBinder binder = new WebDataBinder(customer);
-//		binder.setValidator(validator);
-//
-//		binder.bind(new MutablePropertyValues(request.getParameterMap()));
-//
-//		binder.getValidator().validate(binder.getTarget(), binder.getBindingResult());
-//		System.out.println("Error Countersssssss!!!" + binder.getBindingResult().getErrorCount());
-//		assertEquals(2, binder.getBindingResult().getErrorCount());
+		mockMvc.perform(post("/customer/processRegistrationForm").contentType(MediaType.APPLICATION_FORM_URLENCODED)
+				.content(TestUtil.convertObjectToFormUrlEncodedBytes(customer)).sessionAttr("customer", customer))
+				.andExpect(status().isOk()).andExpect(view().name("customer-registration"))
+				.andExpect(forwardedUrl("/WEB-INF/view/customer-registration.jsp"));
+	}
 
-//		mockMvc.perform(post("/customer/processRegistrationForm").contentType(MediaType.APPLICATION_FORM_URLENCODED)
-//				.content(TestUtil.convertObjectToFormUrlEncodedBytes(customer)).sessionAttr("customer", customer))
-//				.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/user/showMyLoginPage"))
-//				.andExpect(redirectedUrl("/user/showMyLoginPage"));
-	// }
+	@Test
+	public void processRegistrationForm_ShouldRenderRegistrationFormIfEmailAlreadyExist() throws Exception {
+
+		Customer customer = new Customer();
+		customer.setEmail("testEmail@gmail.com");
+		customer.setPassword("123456789");
+
+		MockHttpServletRequest request = new MockHttpServletRequest("POST", "/customer/processRegistrationForm");
+
+		// email already exists before
+		request.setParameter("email", "testEmail@gmail.com");
+		request.setParameter("password", "123456789");
+
+		WebDataBinder binder = new WebDataBinder(customer);
+
+		binder.setValidator(validator);
+		binder.bind(new MutablePropertyValues(request.getParameterMap()));
+		binder.getValidator().validate(binder.getTarget(), binder.getBindingResult());
+
+		assertEquals(0, binder.getBindingResult().getErrorCount());
+
+		mockMvc.perform(post("/customer/processRegistrationForm").contentType(MediaType.APPLICATION_FORM_URLENCODED)
+				.content(TestUtil.convertObjectToFormUrlEncodedBytes(customer)).sessionAttr("customer", customer))
+				.andExpect(status().isOk()).andExpect(view().name("customer-registration"))
+				.andExpect(forwardedUrl("/WEB-INF/view/customer-registration.jsp"));
+	}
+
+	@Test
+	public void processRegistrationForm_ShouldValidateAndAcceptFormInputs() throws Exception {
+
+		Random r = new Random();
+		Integer random = r.nextInt();
+		Customer customer = new Customer();
+		String email = random.toString() + "testEmail@gmail.com";
+		customer.setEmail(email);
+		customer.setPassword("123456789");
+
+		MockHttpServletRequest request = new MockHttpServletRequest("POST", "/customer/processRegistrationForm");
+
+		request.setParameter("email", email);
+		request.setParameter("password", "123456789");
+
+		WebDataBinder binder = new WebDataBinder(customer);
+
+		binder.setValidator(validator);
+		binder.bind(new MutablePropertyValues(request.getParameterMap()));
+		binder.getValidator().validate(binder.getTarget(), binder.getBindingResult());
+
+		assertEquals(0, binder.getBindingResult().getErrorCount());
+
+		mockMvc.perform(post("/customer/processRegistrationForm").contentType(MediaType.APPLICATION_FORM_URLENCODED)
+				.content(TestUtil.convertObjectToFormUrlEncodedBytes(customer)).sessionAttr("customer", customer))
+				.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/user/showMyLoginPage"))
+				.andExpect(redirectedUrl("/user/showMyLoginPage"));
+	}
 
 }

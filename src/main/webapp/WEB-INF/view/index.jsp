@@ -156,8 +156,9 @@
 								</div>
 								<security:authorize access="isAuthenticated()">
 									<strong class="text-uppercase">
-										${loggedinUser.firstName} ${loggedinUser.lastName}<i
-										class="fa fa-caret-down"></i>
+<%-- 									<security:authentication property="principal.username" /> --%>
+										${loggedinUser.firstName} ${loggedinUser.lastName}
+										<i class="fa fa-caret-down"></i>
 									</strong>
 								</security:authorize>
 								<security:authorize access="!isAuthenticated()">
@@ -192,7 +193,7 @@
 						<li class="header-cart dropdown default-dropdown"><a
 							href="${pageContext.request.contextPath}/cart/showCart">
 								<div class="header-btns-icon">
-									<i class="fa fa-shopping-cart"></i> <span class="qty">3</span>
+									<i class="fa fa-shopping-cart"></i> <span class="qty">${cartList}</span>
 								</div> <strong class="text-uppercase">My Cart:</strong> <br>
 						</a></li>
 						<!-- /Cart -->
