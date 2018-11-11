@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.onlineshopping.entity.Address;
 import com.onlineshopping.entity.Customer;
 import com.onlineshopping.service.CustomerService;
 import com.onlineshopping.service.EmailService;
@@ -50,6 +51,33 @@ public class CustomerController {
 		StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
 
 		dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
+	}
+
+	@GetMapping("showNewAddressForm")
+	public String addNewAddress(Model model) {
+		model.addAttribute("address", new Address());
+		return "address";
+	}
+
+	@PostMapping("addAddress")
+	public String addNewAddress(@Valid @ModelAttribute("address") Address address, BindingResult bindingResult,
+			HttpServletRequest request, Model model) {
+
+		Customer customer = (Customer) request.getSession().getAttribute("loggedinUser");
+
+		if (customer == null)
+			return "redirect:/";
+
+		if (bindingResult.hasErrors()) {
+			System.out.println("inside binding result!!!!!!");
+			model.addAttribute("address", new Address());
+			model.addAttribute("FieldsRequired", "All Fields required!");
+			return "address";
+		}
+
+		customerService.addCustomerAddress(customer.getId(), address);
+
+		return "redirect:/checkout/";
 	}
 
 	@GetMapping("/showRegistrationForm")

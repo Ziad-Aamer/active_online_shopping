@@ -7,6 +7,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.onlineshopping.entity.Address;
 import com.onlineshopping.entity.Cart;
 import com.onlineshopping.entity.Customer;
 
@@ -40,6 +41,14 @@ public class CustomerDaoImpl implements CustomerDao {
 		}
 		System.out.println(customer);
 		return customer;
+	}
+
+	@Override
+	public void addCustomerAddress(int customerId, Address address) {
+		Session session = sessionFactory.getCurrentSession();
+		Customer c = session.get(Customer.class, customerId);
+		c.addAddress(address);
+		session.saveOrUpdate(c);
 	}
 
 }

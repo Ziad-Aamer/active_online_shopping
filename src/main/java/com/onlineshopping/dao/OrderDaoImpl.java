@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.onlineshopping.entity.Order;
+import com.onlineshopping.entity.OrderProduct;
 
 @Repository
 public class OrderDaoImpl implements OrderDao {
@@ -54,6 +55,19 @@ public class OrderDaoImpl implements OrderDao {
 	public void update(Order order) {
 		Session session = sessionFactory.getCurrentSession();
 		session.saveOrUpdate(order);
+	}
+
+	@Override
+	public Order createOrder(Order order) {
+		Session session = sessionFactory.getCurrentSession();
+		session.save(order);
+		return order;
+	}
+
+	@Override
+	public void createOrderProduct(OrderProduct orderProduct) {
+		Session session = sessionFactory.getCurrentSession();
+		session.saveOrUpdate(orderProduct);
 	}
 
 }

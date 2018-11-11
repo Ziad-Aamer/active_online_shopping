@@ -58,6 +58,31 @@ public class CartDaoImpl implements CartDao {
 	@Override
 	public void removeCartProduct(CartProductId id) {
 		Session session = factory.getCurrentSession();
+
+		CartProduct cartProduct = session.get(CartProduct.class, id);
+
+		int quantity = cartProduct.getQuantity();
+		double price = cartProduct.getProduct().getPrice() * quantity;
+		Cart cart = cartProduct.getCart();
+
+		session.delete(cartProduct);
+
+		Cart c = session.get(Cart.class, cart.getId());
+		c.setTotalNumberOfProducts(c.getTotalNumberOfProducts() - quantity);
+		c.setTotalPrice(c.getTotalPrice() - price);
+		session.saveOrUpdate(c);
+	}
+
+	@Override
+	public void updateCart(Cart cart) {
+		Session session = factory.getCurrentSession();
+		session.saveOrUpdate(cart);
+	}
+
+	@Override
+	public void removeCartProducts(CartProductId id) {
+		Session session = factory.getCurrentSession();
+
 		CartProduct cartProduct = session.get(CartProduct.class, id);
 		session.delete(cartProduct);
 	}

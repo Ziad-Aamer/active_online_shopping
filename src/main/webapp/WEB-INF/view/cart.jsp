@@ -397,23 +397,7 @@
 				</div>
 			</div>
 
-			<div
-				class="flex-w flex-sb-m p-t-25 p-b-25 bo8 p-l-35 p-r-60 p-lr-15-sm">
-				<div class="flex-w flex-m w-full-sm">
-					<div class="size11 bo4 m-r-10">
-						<input class="sizefull s-text7 p-l-22 p-r-22" type="text"
-							name="coupon-code" placeholder="Coupon Code">
-					</div>
-
-					<div class="size12 trans-0-4 m-t-10 m-b-10 m-r-10">
-						<!-- Button -->
-						<button
-							class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4">
-							Apply coupon</button>
-					</div>
-				</div>
-
-			</div>
+		
 
 			<!-- Total -->
 			<div
@@ -421,62 +405,16 @@
 				<h5 class="m-text20 p-b-24">Cart Totals</h5>
 
 				<!--  -->
-				<div class="flex-w flex-sb-m p-b-12">
-					<span class="s-text18 w-size19 w-full-sm"> Subtotal: </span> <span
-						class="m-text21 w-size20 w-full-sm"> $39.00 </span>
-				</div>
-
-				<!--  -->
-				<div class="flex-w flex-sb bo10 p-t-15 p-b-20">
-					<span class="s-text18 w-size19 w-full-sm"> Shipping: </span>
-
-					<div class="w-size20 w-full-sm">
-						<p class="s-text8 p-b-23">There are no shipping methods
-							available. Please double check your address, or contact us if you
-							need any help.</p>
-
-						<span class="s-text19"> Calculate Shipping </span>
-
-						<div
-							class="rs2-select2 rs3-select2 rs4-select2 bo4 of-hidden w-size21 m-t-8 m-b-12">
-							<select class="selection-2" name="country">
-								<option>Select a country...</option>
-								<option>US</option>
-								<option>UK</option>
-								<option>Japan</option>
-							</select>
-						</div>
-
-						<div class="size13 bo4 m-b-12">
-							<input class="sizefull s-text7 p-l-15 p-r-15" type="text"
-								name="state" placeholder="State /  country">
-						</div>
-
-						<div class="size13 bo4 m-b-22">
-							<input class="sizefull s-text7 p-l-15 p-r-15" type="text"
-								name="postcode" placeholder="Postcode / Zip">
-						</div>
-
-						<div class="size14 trans-0-4 m-b-10">
-							<!-- Button -->
-							<button
-								class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4">
-								Update Totals</button>
-						</div>
-					</div>
-				</div>
-
-				<!--  -->
 				<div class="flex-w flex-sb-m p-t-26 p-b-30">
-					<span class="m-text22 w-size19 w-full-sm"> Total: </span> <span
-						class="m-text21 w-size20 w-full-sm"> $39.00 </span>
+					<span class="m-text22 w-size19 w-full-sm"> Total: </span> 
+					<label id="totalPrice"></label>
 				</div>
 
 				<div class="size15 trans-0-4">
 					<!-- Button -->
-					<button
+					<a href="${pageContext.request.contextPath}/checkout/"
 						class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4">
-						Proceed to Checkout</button>
+						Proceed to Checkout</a>
 				</div>
 			</div>
 		</div>
@@ -649,21 +587,29 @@
 		function calcTotalProductPrice() {
 
 			console.log("I am at calc");
+			
+			var totalPrice = document.getElementById("totalPrice");
 			var results = document
 					.getElementsByClassName("total-product-price");
 			var prices = document.getElementsByClassName("price-product");
 			var quantities = document.getElementsByClassName("num-product");
-
+			var totalPrices = 0;
+			
 			for (i = 0; i < results.length; i++) {
 				if (quantities[i].value < 0) {
 					results[i].innerHTML = "$0";
 					continue;
 				}
+				
+				totalPrices += quantities[i].value * parseInt(prices[i].innerText.substring(1));
 				results[i].innerHTML = "$" + quantities[i].value
 						* parseInt(prices[i].innerText.substring(1));
 				console.log("result = " + quantities[i].value + "*"
 						+ parseInt(prices[i].innerText.substring(1)));
+				console.log("total price : "+totalPrices);
 			}
+			totalPrice.innerHTML = "$" + totalPrices;
+			console.log("total price : "+totalPrices);
 			console.log("I am at End Of calc");
 		}
 	</script>

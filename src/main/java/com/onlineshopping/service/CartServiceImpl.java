@@ -70,4 +70,23 @@ public class CartServiceImpl implements CartService {
 
 		cartDao.removeCartProduct(id);
 	}
+
+	@Transactional
+	@Override
+	public void updateCart(Cart cart) {
+		cartDao.updateCart(cart);
+	}
+
+	@Transactional
+	@Override
+	public void removeCartProducts(List<CartProduct> cartProducts) {
+
+		for (CartProduct cartProduct : cartProducts) {
+			cartDao.removeCartProducts(cartProduct.getCartProductId());
+		}
+		Cart c = cartProducts.get(0).getCart();
+		c.setTotalNumberOfProducts(0);
+		c.setTotalPrice(0);
+		cartDao.updateCart(c);
+	}
 }

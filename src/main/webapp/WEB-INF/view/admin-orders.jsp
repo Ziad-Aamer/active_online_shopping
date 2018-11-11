@@ -88,8 +88,12 @@ button {
 <script>
 
 function div_show(id) {
-	  window.open("${pageContext.request.contextPath}/orders/showFormUpdate?orderId=" + id,""
-	 ,"height=250,width=400,status=no,location=no,toolbar=no,directories=no,menubar=no");
+	var url = "${pageContext.request.contextPath}/orders/showFormUpdate?orderId=" + id;
+  //  var position = (left == undefined || top == undefined) ? 'centerscreen' : 'left=' + left + ', top=' + top;
+// 	  window.open("${pageContext.request.contextPath}/orders/showFormUpdate?orderId=" + id,""
+// 	 ,"height=250,width=400,status=no,location=no,toolbar=no,directories=no,menubar=no");
+	 window.open
+	 (url, 'popupModalWindow' + new Date().getTime(), 'width=500px, height=500px, chrome, dependent=1, dialog=1, modal=1, resizable=0, scrollbars=0, location=0, status=0, menubar=0, toolbar=0 ');
 	}
 	
 </script>

@@ -6,8 +6,8 @@
 </head>
 <body>
 	<h2>order status</h2>
-
-	<form:form action="updateOrderStatus" modelAttribute="order">
+<!-- //onsubmit="return closeSelf(this)" -->
+	<form:form action="updateOrderStatus" name="certform" modelAttribute="order" >
 	
 	<label>order id: </label> <label>${order.id}</label>
 	 <form:input type="hidden" path="id"/>
@@ -31,5 +31,16 @@
 	<input type="submit" value="Update" />
 
 	</form:form>
+<!-- 	<script type="text/javascript"> -->
+<!-- // 	function closeSelf(f){ -->
+<!-- // 	  //  document.forms['certform'].submit(); -->
+<!-- // 	    document.forms.submit(); -->
+<!-- // 		//f.submit(); -->
+<!-- // 		console.log('inside close self'); -->
+<!-- // 		window.close(); -->
+<!-- // 	   // self.close(); -->
+<!-- // 	    return true; -->
+<!-- // 	} -->
+<!-- 	</script> -->
 </body>
 </html>

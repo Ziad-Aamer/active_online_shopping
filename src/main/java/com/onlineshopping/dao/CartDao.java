@@ -17,5 +17,9 @@ public interface CartDao {
 
 	public void removeCartProduct(CartProductId id);
 
+	public void removeCartProducts(CartProductId id);
+
 	public List<CartProduct> getProducts(int cartId);
+
+	public void updateCart(Cart cart);
 }

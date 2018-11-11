@@ -26,6 +26,7 @@ import com.onlineshopping.service.CartService;
 public class CartController {
 
 	private CartProductCm cpm;
+	private double totalPrice;
 
 	@Autowired
 	private CartService cartService;
@@ -38,7 +39,6 @@ public class CartController {
 	@GetMapping("/showCart")
 	public String showCart(Model theModel, HttpServletRequest request) {
 		Customer customer = (Customer) request.getSession().getAttribute("loggedinUser");
-		System.out.println("current user showCart: " + customer);
 
 		if (customer == null)
 			return "redirect:/";
@@ -47,15 +47,6 @@ public class CartController {
 		listOfProducts = new ArrayList<>();
 		listOfProducts = cartService.getProducts(cart.getId());
 		cpm = new CartProductCm(listOfProducts);
-
-		System.out.println("all products in cart product : " + cpm.getListOfProducts());
-
-		for (CartProduct cp : cpm.getListOfProducts()) {
-			System.out.println("cart product id !!!! " + cp.getCartProductId());
-			System.out.println(cp.getCart());
-			System.out.println(cp.getProduct());
-			System.out.println(cp.getQuantity() + "\n\n");
-		}
 
 		// work here
 		theModel.addAttribute("cpc", cpm);
@@ -66,7 +57,6 @@ public class CartController {
 	@PostMapping("/removeProduct/{productId}")
 	public String removeProduct(@PathVariable int productId, HttpServletRequest request) {
 
-		System.out.println("product id in cart controller to deleteeeeeeeeeeeeeeeeee : " + productId);
 		Customer customer = (Customer) request.getSession().getAttribute("loggedinUser");
 		Cart cart = customer.getCart();
 		cartService.removeProduct(cart, productId);
@@ -80,11 +70,8 @@ public class CartController {
 		if (customer == null)
 			return "redirect:/";
 		Cart cart = customer.getCart();
-		System.out.println(cart);
 
 		cartService.addProduct(cart, productId);
-
-		System.out.println("Product with id: " + productId + " Added");
 
 		return "redirect:/";
 	}
@@ -93,14 +80,21 @@ public class CartController {
 	public String updateCartProducts(@ModelAttribute("cpc") CartProductCm cpc, HttpServletRequest request,
 			Model theModel) {
 		Customer customer = (Customer) request.getSession().getAttribute("loggedinUser");
-		System.out.println("all updated products: " + cpc.getListOfProducts());
 		if (customer == null)
 			return "redirect:/";
 		Cart cart = customer.getCart();
 
 		if (cpc.getListOfProducts() != null) {
+
+			double totalPrice = calculateTotalPrice(cpc.getListOfProducts());
+			int quantity = getProductsQuantity(cpc.getListOfProducts());
+
+			cart.setTotalPrice(totalPrice);
+			cart.setTotalNumberOfProducts(quantity);
+
+			cartService.updateCart(cart);
+
 			for (CartProduct cartProduct : cpc.getListOfProducts()) {
-				System.out.println("each product in specific cart : " + cartProduct.getProduct());
 				CartProductId cpId = new CartProductId(cart, cartProduct.getProduct());
 				cartProduct.setCartProductId(cpId);
 				cartService.updateCartProduct(cartProduct);
@@ -111,6 +105,22 @@ public class CartController {
 		return "cart";
 	}
 
+	private double calculateTotalPrice(List<CartProduct> cartProducts) {
+		double totalPrice = 0;
+		for (CartProduct cartProduct : cartProducts) {
+			totalPrice += cartProduct.getQuantity() * cartProduct.getProduct().getPrice();
+		}
+		return totalPrice;
+	}
+
+	private int getProductsQuantity(List<CartProduct> cartProducts) {
+		int quantity = 0;
+		for (CartProduct cartProduct : cartProducts) {
+			quantity += cartProduct.getQuantity();
+		}
+		return quantity;
+	}
+
 	public List<CartProduct> getListOfProducts() {
 		return listOfProducts;
 	}
@@ -119,4 +129,11 @@ public class CartController {
 		this.listOfProducts = listOfProducts;
 	}
 
+	public double getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(double totalPrice) {
+		this.totalPrice = totalPrice;
+	}
 }

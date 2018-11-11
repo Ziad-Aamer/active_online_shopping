@@ -14,4 +14,8 @@ public interface CartService {
 	List<CartProduct> getProducts(int cartId);
 
 	public CartProduct updateCartProduct(CartProduct cp);
+
+	public void updateCart(Cart cart);
+
+	public void removeCartProducts(List<CartProduct> cartProducts);
 }

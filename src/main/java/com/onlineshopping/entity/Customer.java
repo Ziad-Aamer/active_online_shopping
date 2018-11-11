@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -14,7 +15,7 @@ import javax.persistence.Table;
 @Table(name = "customer")
 public class Customer extends User {
 
-	@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH })
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "customer_id")
 	private List<Address> addresses;
 
@@ -35,7 +36,7 @@ public class Customer extends User {
 		orders.add(order);
 		order.setCustomer(this);
 	}
-	
+
 	public List<Address> getAddresses() {
 		return addresses;
 	}
@@ -60,14 +61,11 @@ public class Customer extends User {
 	}
 
 	public Cart getCart() {
-	    return cart;
+		return cart;
 	}
 
 	public void setCart(Cart cart) {
-	    this.cart = cart;
+		this.cart = cart;
 	}
 
-
-	
-	
 }

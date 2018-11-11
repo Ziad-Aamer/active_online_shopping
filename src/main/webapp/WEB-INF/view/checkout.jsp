@@ -1,3 +1,5 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,20 +16,26 @@
 	rel="stylesheet">
 
 <!-- Bootstrap -->
-<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" />
+<link type="text/css" rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" />
 
 <!-- Slick -->
-<link type="text/css" rel="stylesheet" href="css/slick.css" />
-<link type="text/css" rel="stylesheet" href="css/slick-theme.css" />
+<link type="text/css" rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/slick.css" />
+<link type="text/css" rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/slick-theme.css" />
 
 <!-- nouislider -->
-<link type="text/css" rel="stylesheet" href="css/nouislider.min.css" />
+<link type="text/css" rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/nouislider.min.css" />
 
 <!-- Font Awesome Icon -->
-<link rel="stylesheet" href="css/font-awesome.min.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/font-awesome.min.css">
 
 <!-- Custom stlylesheet -->
-<link type="text/css" rel="stylesheet" href="css/style.css" />
+<link type="text/css" rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/style.css" />
 
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -84,23 +92,6 @@
 						</a>
 					</div>
 					<!-- /Logo -->
-
-					<!-- Search -->
-					<div class="header-search">
-						<form>
-							<input class="input search-input" type="text"
-								placeholder="Enter your keyword"> <select
-								class="input search-categories">
-								<option value="0">All Categories</option>
-								<option value="1">Category 01</option>
-								<option value="1">Category 02</option>
-							</select>
-							<button class="search-btn">
-								<i class="fa fa-search"></i>
-							</button>
-						</form>
-					</div>
-					<!-- /Search -->
 				</div>
 				<div class="pull-right">
 					<ul class="header-btns">
@@ -609,7 +600,7 @@
 		<div class="container">
 			<!-- row -->
 			<div class="row">
-				<form id="checkout-form" class="clearfix">
+<%-- 				<form id="checkout-form" class="clearfix"> --%>
 					<div class="col-md-6">
 						<div class="billing-details">
 							<p>
@@ -618,50 +609,35 @@
 							<div class="section-title">
 								<h3 class="title">Billing Details</h3>
 							</div>
-							<div class="form-group">
-								<input class="input" type="text" name="first-name"
-									placeholder="First Name">
-							</div>
-							<div class="form-group">
-								<input class="input" type="text" name="last-name"
-									placeholder="Last Name">
-							</div>
-							<div class="form-group">
-								<input class="input" type="email" name="email"
-									placeholder="Email">
-							</div>
-							<div class="form-group">
-								<input class="input" type="text" name="address"
-									placeholder="Address">
-							</div>
-							<div class="form-group">
-								<input class="input" type="text" name="city" placeholder="City">
-							</div>
-							<div class="form-group">
-								<input class="input" type="text" name="country"
-									placeholder="Country">
-							</div>
-							<div class="form-group">
-								<input class="input" type="text" name="zip-code"
-									placeholder="ZIP Code">
-							</div>
-							<div class="form-group">
-								<input class="input" type="tel" name="tel"
-									placeholder="Telephone">
-							</div>
-							<div class="form-group">
-								<div class="input-checkbox">
-									<input type="checkbox" id="register"> <label
-										class="font-weak" for="register">Create Account?</label>
-									<div class="caption">
-										<p>Lorem ipsum dolor sit amet, consectetur adipisicing
-											elit, sed do eiusmod tempor incididunt.
-										<p>
-											<input class="input" type="password" name="password"
-												placeholder="Enter Your Password">
-									</div>
-								</div>
-							</div>
+
+							<form:form action="createOrder" method="POST"
+								modelAttribute="address">
+
+								<c:forEach var="address" items="${addresses}" varStatus="vs">
+
+									<c:choose>
+										<c:when test="${vs.index == '0'}">
+											<form:radiobutton path="id" checked="true"
+												value="${address.id}" /> ${address.city} ${address.landmark}		
+								        <br />
+										</c:when>
+										<c:otherwise>
+											<form:radiobutton path="id" value="${address.id}" /> ${address.city} ${address.landmark}		
+								        <br />
+										</c:otherwise>
+									</c:choose>
+
+								</c:forEach>
+
+								<input type="submit" value="submit">
+							</form:form>
+
+							<a
+								href="${pageContext.request.contextPath}/customer/showNewAddressForm">Add
+								new address</a>
+
+							<!-- 							<button id="myButton" onclick="showAddressModal();">Add new Address</button> -->
+
 						</div>
 					</div>
 
@@ -766,7 +742,7 @@
 												<li><span>Color: Camelot</span></li>
 											</ul></td>
 										<td class="price text-center"><strong>$32.50</strong><br>
-										<del class="font-weak">
+											<del class="font-weak">
 												<small>$40.00</small>
 											</del></td>
 										<td class="qty text-center"><input class="input"
@@ -838,7 +814,7 @@
 						</div>
 
 					</div>
-				</form>
+<%-- 				</form> --%>
 			</div>
 			<!-- /row -->
 		</div>
@@ -934,7 +910,9 @@
 					<div class="footer-copyright">
 						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 						Copyright &copy;
-						<script>document.write(new Date().getFullYear());</script>
+						<script>
+							document.write(new Date().getFullYear());
+						</script>
 						All rights reserved | This template is made with <i
 							class="fa fa-heart-o" aria-hidden="true"></i> by <a
 							href="https://colorlib.com" target="_blank">Colorlib</a>
@@ -950,12 +928,17 @@
 	<!-- /FOOTER -->
 
 	<!-- jQuery Plugins -->
-	<script src="js/jquery.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/slick.min.js"></script>
-	<script src="js/nouislider.min.js"></script>
-	<script src="js/jquery.zoom.min.js"></script>
-	<script src="js/main.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/resources/js/slick.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/resources/js/nouislider.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/resources/js/jquery.zoom.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/main.js"></script>
 
 </body>
 
