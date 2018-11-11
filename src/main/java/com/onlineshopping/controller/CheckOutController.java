@@ -34,24 +34,6 @@ public class CheckOutController {
 	private OrderService orderService;
 
 	private List<Address> addresses;
-	private Address selectedAddress;
-	private String addressId;
-
-	public String getAddressId() {
-		return addressId;
-	}
-
-	public void setAddressId(String addressId) {
-		this.addressId = addressId;
-	}
-
-	public Address getSelectedAddress() {
-		return selectedAddress;
-	}
-
-	public void setSelectedAddress(Address selectedAddress) {
-		this.selectedAddress = selectedAddress;
-	}
 
 	@GetMapping("/")
 	public String index(HttpServletRequest request, Model model) {
@@ -70,7 +52,7 @@ public class CheckOutController {
 	}
 
 	@PostMapping("createOrder")
-	public String createOrder(@ModelAttribute("address") Address address, HttpServletRequest request, Model model) {
+	public String createOrder(@ModelAttribute("address") Address address, HttpServletRequest request) {
 		Customer customer = (Customer) request.getSession().getAttribute("loggedinUser");
 		if (customer == null) {
 			return "redirect:/";
@@ -83,12 +65,9 @@ public class CheckOutController {
 		List<Address> targetAddress = customer.getAddresses().stream().filter(item -> item.getId() == address.getId())
 				.collect(Collectors.toList());
 
-		System.out.println("target Address: " + targetAddress.get(0));
 		order.setCustomer(customer);
 		order.setAddress(targetAddress.get(0));
 		List<CartProduct> cartProducts = cartService.getProducts(customer.getCart().getId());
-
-		System.out.println("cart products:::::: " + cartProducts);
 
 		order.setTotalPrice(calculateTotalPrice(cartProducts));
 		orderService.createOrder(cartProducts, order);

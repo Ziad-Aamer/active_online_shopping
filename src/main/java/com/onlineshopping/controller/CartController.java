@@ -48,8 +48,7 @@ public class CartController {
 		listOfProducts = cartService.getProducts(cart.getId());
 		cpm = new CartProductCm(listOfProducts);
 
-		// work here
-		theModel.addAttribute("cpc", cpm);
+		theModel.addAttribute("cpm", cpm);
 
 		return "cart";
 	}
@@ -58,6 +57,19 @@ public class CartController {
 	public String removeProduct(@PathVariable int productId, HttpServletRequest request) {
 
 		Customer customer = (Customer) request.getSession().getAttribute("loggedinUser");
+		if (customer == null)
+			return "redirect:/";
+		Cart cart = customer.getCart();
+		cartService.removeProduct(cart, productId);
+		return "redirect:/cart/showCart";
+	}
+
+	@GetMapping("/removeProduct/{productId}")
+	public String removeProductForTesting(@PathVariable int productId, HttpServletRequest request) {
+
+		Customer customer = (Customer) request.getSession().getAttribute("loggedinUser");
+		if (customer == null)
+			return "redirect:/";
 		Cart cart = customer.getCart();
 		cartService.removeProduct(cart, productId);
 		return "redirect:/cart/showCart";
@@ -77,30 +89,30 @@ public class CartController {
 	}
 
 	@PostMapping("updateCart")
-	public String updateCartProducts(@ModelAttribute("cpc") CartProductCm cpc, HttpServletRequest request,
+	public String updateCartProducts(@ModelAttribute("cpm") CartProductCm cpm, HttpServletRequest request,
 			Model theModel) {
 		Customer customer = (Customer) request.getSession().getAttribute("loggedinUser");
 		if (customer == null)
 			return "redirect:/";
 		Cart cart = customer.getCart();
 
-		if (cpc.getListOfProducts() != null) {
+		if (cpm.getListOfProducts() != null) {
 
-			double totalPrice = calculateTotalPrice(cpc.getListOfProducts());
-			int quantity = getProductsQuantity(cpc.getListOfProducts());
+			double totalPrice = calculateTotalPrice(cpm.getListOfProducts());
+			int quantity = getProductsQuantity(cpm.getListOfProducts());
 
 			cart.setTotalPrice(totalPrice);
 			cart.setTotalNumberOfProducts(quantity);
 
 			cartService.updateCart(cart);
 
-			for (CartProduct cartProduct : cpc.getListOfProducts()) {
+			for (CartProduct cartProduct : cpm.getListOfProducts()) {
 				CartProductId cpId = new CartProductId(cart, cartProduct.getProduct());
 				cartProduct.setCartProductId(cpId);
 				cartService.updateCartProduct(cartProduct);
 			}
 
-			theModel.addAttribute("cpc", cpc);
+			theModel.addAttribute("cpm", cpm);
 		}
 		return "cart";
 	}

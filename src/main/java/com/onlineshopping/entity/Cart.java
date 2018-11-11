@@ -21,7 +21,7 @@ public class Cart {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	//cart size
+	// cart size
 	@Column(name = "number_of_products")
 	private int totalNumberOfProducts;
 
@@ -32,25 +32,29 @@ public class Cart {
 			CascadeType.REFRESH })
 	private Customer customer;
 
-	
-	@OneToMany(mappedBy="cart",
-		cascade={CascadeType.PERSIST,CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
+	@OneToMany(mappedBy = "cart", cascade = { CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE,
+			CascadeType.REFRESH })
 	private List<CartProduct> products;
-	
-	public Cart() {}
-	
+
+	public Cart() {
+	}
+
 	public Cart(int totalNumberOfProducts, double totalPrice) {
 		this.totalNumberOfProducts = totalNumberOfProducts;
 		this.totalPrice = totalPrice;
 	}
-	
+
 	public void addCartProduct(CartProduct cartProduct) {
-	    if(products==null)
-		products = new ArrayList<>();
-	    
-	    products.add(cartProduct);
-	    
-	   // cartProduct.setCart(this);
+		if (products == null)
+			products = new ArrayList<>();
+
+		products.add(cartProduct);
+
+		// cartProduct.setCart(this);
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public int getTotalNumberOfProducts() {
@@ -78,11 +82,11 @@ public class Cart {
 	}
 
 	public List<CartProduct> getProducts() {
-	    return products;
+		return products;
 	}
 
 	public void setProducts(List<CartProduct> products) {
-	    this.products = products;
+		this.products = products;
 	}
 
 	public int getId() {
@@ -91,8 +95,8 @@ public class Cart {
 
 	@Override
 	public String toString() {
-	    return "Cart [id=" + id + ", totalNumberOfProducts=" + totalNumberOfProducts + ", totalPrice=" + totalPrice
-		    + "]";
+		return "Cart [id=" + id + ", totalNumberOfProducts=" + totalNumberOfProducts + ", totalPrice=" + totalPrice
+				+ "]";
 	}
-	
+
 }

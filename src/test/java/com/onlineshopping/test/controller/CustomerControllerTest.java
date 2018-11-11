@@ -25,7 +25,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
 import com.onlineshopping.config.AppConfig;
 import com.onlineshopping.entity.Customer;
@@ -43,15 +42,11 @@ public class CustomerControllerTest {
 	private org.springframework.validation.Validator validator;
 
 	@Autowired
-	private RequestMappingHandlerAdapter handlerAdapter;
-
-	@Autowired
 	private WebApplicationContext webApplicationContext;
 
 	@Before
 	public void setUp() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-		// when(requestValidatorMock.supports(any())).thenReturn(true);
 	}
 
 	// TODO: i need to solve securityException , when add hasProperty attritbute!!!

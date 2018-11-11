@@ -111,7 +111,7 @@ public class CustomerController {
 			String url = "please click the link below to continue your process: \n\n\n <a href='" + path
 					+ "'>Create New Password</a>";
 
-			emailService.sendMimeMessage(email, "Confirmation Email", url);
+			// emailService.sendMimeMessage(email, "Confirmation Email", url);
 			logger.info("email sent!!!!");
 		}
 		return "check-email";

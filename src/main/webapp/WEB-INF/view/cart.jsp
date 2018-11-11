@@ -78,13 +78,13 @@
 
 			<div class="wrap_header">
 				<!-- Logo -->
-					<div class="header-logo">
-						<a class="logo" href="${pageContext.request.contextPath}/"> <img
-							src="${pageContext.request.contextPath}/resources/img/logo.png"
-							alt="">
-						</a>
-					</div>
-					<!-- /Logo -->
+				<div class="header-logo">
+					<a class="logo" href="${pageContext.request.contextPath}/"> <img
+						src="${pageContext.request.contextPath}/resources/img/logo.png"
+						alt="">
+					</a>
+				</div>
+				<!-- /Logo -->
 
 				<!-- Menu -->
 				<div class="wrap_menu">
@@ -345,7 +345,7 @@
 			<!-- Cart item -->
 			<div class="container-table-cart pos-relative">
 				<div class="wrap-table-shopping-cart bgwhite">
-					<form:form action="updateCart" modelAttribute="cpc" method="POST">
+					<form:form action="updateCart" modelAttribute="cpm" method="POST">
 						<table class="table-shopping-cart">
 							<tr class="table-head">
 								<th class="column-1"></th>
@@ -355,13 +355,15 @@
 								<th class="column-5">Total</th>
 							</tr>
 
-							<c:forEach var="cartProduct" varStatus="vs" items="${cpc.listOfProducts}">
-							        <form:hidden path="listOfProducts[${vs.index}].product.id" />
-							        <form:hidden path="listOfProducts[${vs.index}].product.name" />
-									<form:hidden path="listOfProducts[${vs.index}].product.url" />
-							        <form:hidden path="listOfProducts[${vs.index}].product.price" />
-							        <form:hidden path="listOfProducts[${vs.index}].product.description" />
-							        
+							<c:forEach var="cartProduct" varStatus="vs"
+								items="${cpm.listOfProducts}">
+								<form:hidden path="listOfProducts[${vs.index}].product.id" />
+								<form:hidden path="listOfProducts[${vs.index}].product.name" />
+								<form:hidden path="listOfProducts[${vs.index}].product.url" />
+								<form:hidden path="listOfProducts[${vs.index}].product.price" />
+								<form:hidden
+									path="listOfProducts[${vs.index}].product.description" />
+
 
 								<tr class="table-row">
 									<td class="column-1">
@@ -376,14 +378,16 @@
 									<td class="column-4">
 										<div class="flex-w bo5 of-hidden w-size17">
 
-											<form:input class=" m-text18 t-center num-product" type="number"
-												name="num-product1" oninput="calcTotalProductPrice();"
+											<form:input class=" m-text18 t-center num-product"
+												type="number" name="num-product1"
+												oninput="calcTotalProductPrice();"
 												path="listOfProducts[${vs.index}].quantity" />
 
 										</div>
 									</td>
 									<td class="column-5 total-product-price"></td>
-		<td><input type="submit" value="delete" onclick="if (confirm('Are you sure you want to delete?')) form.action='${pageContext.request.contextPath}/cart/removeProduct/${cartProduct.product.id}/'; else return false;" /></td>
+									<td><input type="submit" value="delete"
+										onclick="if (confirm('Are you sure you want to delete?')) form.action='${pageContext.request.contextPath}/cart/removeProduct/${cartProduct.product.id}/'; else return false;" /></td>
 								</tr>
 							</c:forEach>
 						</table>
@@ -397,7 +401,7 @@
 				</div>
 			</div>
 
-		
+
 
 			<!-- Total -->
 			<div
@@ -406,8 +410,8 @@
 
 				<!--  -->
 				<div class="flex-w flex-sb-m p-t-26 p-b-30">
-					<span class="m-text22 w-size19 w-full-sm"> Total: </span> 
-					<label id="totalPrice"></label>
+					<span class="m-text22 w-size19 w-full-sm"> Total: </span> <label
+						id="totalPrice"></label>
 				</div>
 
 				<div class="size15 trans-0-4">
@@ -587,29 +591,30 @@
 		function calcTotalProductPrice() {
 
 			console.log("I am at calc");
-			
+
 			var totalPrice = document.getElementById("totalPrice");
 			var results = document
 					.getElementsByClassName("total-product-price");
 			var prices = document.getElementsByClassName("price-product");
 			var quantities = document.getElementsByClassName("num-product");
 			var totalPrices = 0;
-			
+
 			for (i = 0; i < results.length; i++) {
 				if (quantities[i].value < 0) {
 					results[i].innerHTML = "$0";
 					continue;
 				}
-				
-				totalPrices += quantities[i].value * parseInt(prices[i].innerText.substring(1));
+
+				totalPrices += quantities[i].value
+						* parseInt(prices[i].innerText.substring(1));
 				results[i].innerHTML = "$" + quantities[i].value
 						* parseInt(prices[i].innerText.substring(1));
 				console.log("result = " + quantities[i].value + "*"
 						+ parseInt(prices[i].innerText.substring(1)));
-				console.log("total price : "+totalPrices);
+				console.log("total price : " + totalPrices);
 			}
 			totalPrice.innerHTML = "$" + totalPrices;
-			console.log("total price : "+totalPrices);
+			console.log("total price : " + totalPrices);
 			console.log("I am at End Of calc");
 		}
 	</script>
