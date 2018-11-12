@@ -20,8 +20,15 @@
 <!--             </div> -->
 <!--         </div> -->
 <!--     </div> -->
-		
-		<form action="<c:url value="signin/facebook" />" method="POST">
+			<form name='facebookSocialloginForm'
+            		  action="<c:url value='../auth/facebook?scope=email,user_about_me,user_birthday' />" method='POST'>
+							<img src="../images/facebook.png" alt="">
+							<button type="submit">
+								<i>Sign In with Facebook</i>
+							</button>	
+							<div class="clear"></div>
+					</form>		
+		<form action="<c:url value="../auth/facebook" />" method="POST">
 		    <button type="submit">Sign in with Facebook</button>
 		    <input type="hidden" name="scope" value="public_profile,email" />	    
 		</form>

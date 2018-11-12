@@ -51,7 +51,14 @@ public class CartControllerTest {
 
 	@Before
 	public void setUp() {
+
+		// HttpSessionCsrfTokenRepository httpSessionCsrfTokenRepository = new
+		// HttpSessionCsrfTokenRepository();
+		// CsrfToken csrfToken = httpSessionCsrfTokenRepository.generateToken(new
+		// MockHttpServletRequest());
+
 		Customer customer = new Customer();
+
 		customer.setEmail("john");
 		customer.setFirstName("john");
 		customer.setLastName("peter");
@@ -66,9 +73,22 @@ public class CartControllerTest {
 		customer.setCart(cart);
 
 		sessionattr.put("loggedinUser", customer);
-
+		// sessionattr.put("org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository.CSRF_TOKEN‌​",
+		// csrfToken);
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).apply(springSecurity())
 				.addFilters(this.springSecurityFilterChain).build();
+	}
+
+	@After
+	public void destroy() {
+		long id = 1;
+		try {
+			mockMvc.perform(get("/cart/removeProduct/" + id).sessionAttrs(sessionattr))
+					.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/cart/showCart"))
+					.andExpect(redirectedUrl("/cart/showCart"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Test
@@ -110,55 +130,26 @@ public class CartControllerTest {
 //		cp.setCart(cart);
 //		cp.setProduct(product);
 //		cp.setCartProductId(cpId);
+//		cp.setQuantity(5);
 //
 //		List<CartProduct> cpList = new ArrayList<>();
 //		cpList.add(cp);
 //		cpList.add(cp);
 //
 //		cpm.setListOfProducts(cpList);
-
-//		MockHttpServletRequest request = new MockHttpServletRequest("POST", "/cart/updateCart");
 //
-//		WebDataBinder binder = new WebDataBinder(cpm);
-//		binder.setValidator(validator);
-//
-//		binder.bind(new MutablePropertyValues(request.getParameterMap()));
-//
-//		binder.getValidator().validate(binder.getTarget(), binder.getBindingResult());
-	// assertEquals(0, binder.getBindingResult().getErrorCount());
-
 //		try {
-
-//			MockHttpServletRequest request = new MockHttpServletRequest("POST", "/cart/updateCart");
 //
-//			WebDataBinder binder = new WebDataBinder(cpm);
-//			binder.setValidator(validator);
+//			System.out.println("loggedinUser in current session : " + sessionattr.get("loggedinUser"));
 //
-//			binder.bind(new MutablePropertyValues(request.getParameterMap()));
-//
-//			binder.getValidator().validate(binder.getTarget(), binder.getBindingResult());
-	// assertEquals(0, binder.getBindingResult().getErrorCount());
-
-//			mockMvc.perform(post("/cart/updateCart").contentType(MediaType.APPLICATION_FORM_URLENCODED)
+//			mockMvc.perform(post("/cart/updateCart").with(csrf()).contentType(MediaType.APPLICATION_FORM_URLENCODED)
 //					.content(TestUtil.convertObjectToFormUrlEncodedBytes(cpm)).sessionAttrs(sessionattr))
 //					.andExpect(status().isOk()).andExpect(view().name("cart"))
 //					.andExpect(forwardedUrl("/WEB-INF/view/cart.jsp"));
 //		} catch (Exception e) {
-//			e.printStackTrace();
+//			System.out.println("unit test Exception : " + e.getMessage());
 //		}
 //
 //	}
-
-	@After
-	public void destroy() {
-		long id = 1;
-		try {
-			mockMvc.perform(get("/cart/removeProduct/" + id).sessionAttrs(sessionattr))
-					.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/cart/showCart"))
-					.andExpect(redirectedUrl("/cart/showCart"));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 }

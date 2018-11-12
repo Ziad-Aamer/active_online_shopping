@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -22,8 +23,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.onlineshopping.config.AppConfig;
+import com.onlineshopping.entity.Address;
 import com.onlineshopping.entity.Customer;
 import com.onlineshopping.test.context.TestContext;
+import com.onlineshopping.test.context.TestUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { TestContext.class, AppConfig.class })
@@ -72,11 +75,16 @@ public class CheckoutControllerTest {
 				.andExpect(view().name("redirect:/")).andExpect(redirectedUrl("/"));
 	}
 
-//	@Test
-//	public void createOrder_ShouldSaveOrderAndRenderToIndexView() throws Exception {
-//
-//		mockMvc.perform(post("/checkout/createOrder").sessionAttrs(sessionattr)).andExpect(status().is3xxRedirection())
-//				.andExpect(view().name("redirect:/")).andExpect(redirectedUrl("/"));
-//	}
+	@Test
+	public void createOrder_ShouldSaveOrderAndRenderToIndexView() throws Exception {
+
+		Address address = new Address();
+		address.setId(2);
+
+		mockMvc.perform(post("/checkout/createOrder").contentType(MediaType.APPLICATION_FORM_URLENCODED)
+				.content(TestUtil.convertObjectToFormUrlEncodedBytes(address)).sessionAttrs(sessionattr))
+				.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/"))
+				.andExpect(redirectedUrl("/"));
+	}
 
 }

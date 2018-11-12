@@ -45,7 +45,6 @@ public class MainControllerTest {
 	@Before
 	public void setUp() {
 		Mockito.reset(beanInitializer);
-//.addFilter(springSecurityFilterChain)
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 	}
 
@@ -65,19 +64,8 @@ public class MainControllerTest {
 		System.out.println("length of categorirs: " + categories.size());
 		mockMvc.perform(get("/")).andExpect(status().isOk()).andExpect(view().name("index"))
 				.andExpect(forwardedUrl("/WEB-INF/view/index.jsp"));
-		// .andExpect(model().attribute("categories", hasSize(1)));
-		// .andExpect(model().attribute("categories",
-		// hasItem(allOf(hasProperty("categoryName", is("test1"))))));
 
 		verify(beanInitializer, times(1)).getCategoriesEAGER();
 		verifyNoMoreInteractions(beanInitializer);
 	}
 }
-
-//mockMvc.perform(get("/")).andExpect(status().isOk()).andExpect(view().name("/index"))
-//.andExpect(forwardedUrl("/WEB-INF/view/index.jsp")).andExpect(model().attribute("todos", hasSize(2)))
-//.andExpect(model().attribute("todos",
-//		hasItem(allOf(hasProperty("id", is(1L)), hasProperty("description", is("Lorem ipsum")),
-//				hasProperty("title", is("Foo"))))))
-//.andExpect(model().attribute("todos", hasItem(allOf(hasProperty("id", is(2L)),
-//		hasProperty("description", is("Lorem ipsum")), hasProperty("title", is("Bar"))))));

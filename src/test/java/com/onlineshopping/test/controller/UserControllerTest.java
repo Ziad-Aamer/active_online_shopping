@@ -33,7 +33,6 @@ public class UserControllerTest {
 
 	@Before
 	public void setUp() {
-		// .defaultRequest(get("/").with(user("user").roles("ADMIN")))
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).apply(springSecurity()).build();
 	}
 

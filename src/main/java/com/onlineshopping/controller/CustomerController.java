@@ -198,4 +198,11 @@ public class CustomerController {
 		return nextView;
 	}
 
+	@GetMapping("delete")
+	public void deleteCustomerForTesting(@RequestParam("email") String email) {
+		System.out.println("inside customer controller , delete customer method : " + email);
+		customerService.deleteCustomer(email);
+		userService.deleteUser(email);
+	}
+
 }

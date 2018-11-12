@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.Random;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,9 +45,14 @@ public class CustomerControllerTest {
 	@Autowired
 	private WebApplicationContext webApplicationContext;
 
+	String email;
+
 	@Before
 	public void setUp() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+		Random r = new Random();
+		Integer random = r.nextInt();
+		email = random.toString() + "testEmail@gmail.com";
 	}
 
 	// TODO: i need to solve securityException , when add hasProperty attritbute!!!
@@ -155,10 +161,7 @@ public class CustomerControllerTest {
 	@Test
 	public void processRegistrationForm_ShouldValidateAndAcceptFormInputs() throws Exception {
 
-		Random r = new Random();
-		Integer random = r.nextInt();
 		Customer customer = new Customer();
-		String email = random.toString() + "testEmail@gmail.com";
 		customer.setEmail(email);
 		customer.setPassword("123456789");
 
@@ -179,6 +182,12 @@ public class CustomerControllerTest {
 				.content(TestUtil.convertObjectToFormUrlEncodedBytes(customer)).sessionAttr("customer", customer))
 				.andExpect(status().is3xxRedirection()).andExpect(view().name("redirect:/user/showMyLoginPage"))
 				.andExpect(redirectedUrl("/user/showMyLoginPage"));
+	}
+
+	@After
+	public void destroy() throws Exception {
+		System.out.println("user will be deleted: " + email);
+		mockMvc.perform(get("/customer/delete").param("email", email)).andExpect(status().isOk());
 	}
 
 }

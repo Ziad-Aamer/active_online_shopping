@@ -110,7 +110,7 @@ public class FacebookConfig implements InitializingBean {
 		System.out.println("\n=====================>inside providerSignInController");
 		ProviderSignInController providerSigninController = new ProviderSignInController(connectionFactoryLocator(),
 				usersConnectionRepository(), socialContext);
-		providerSigninController.setPostSignInUrl("/posts");
+		providerSigninController.setPostSignInUrl("/facebook/posts");
 		return providerSigninController;
 	}
 

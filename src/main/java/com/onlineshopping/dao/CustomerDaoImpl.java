@@ -51,4 +51,20 @@ public class CustomerDaoImpl implements CustomerDao {
 		session.saveOrUpdate(c);
 	}
 
+	@Override
+	public void deleteCustomer(String email) {
+		Session session = sessionFactory.getCurrentSession();
+		Customer customer = null;
+		try {
+			customer = session.createQuery("from Customer c where c.email=:email", Customer.class)
+					.setParameter("email", email).getSingleResult();
+
+			if (customer != null) {
+				session.delete(customer);
+			}
+		} catch (NoResultException e) {
+
+		}
+	}
+
 }

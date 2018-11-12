@@ -91,16 +91,19 @@ public class CartController {
 	@PostMapping("updateCart")
 	public String updateCartProducts(@ModelAttribute("cpm") CartProductCm cpm, HttpServletRequest request,
 			Model theModel) {
+		System.out.println("inside updateCart method !!!!!!!!!!!!");
 		Customer customer = (Customer) request.getSession().getAttribute("loggedinUser");
 		if (customer == null)
 			return "redirect:/";
 		Cart cart = customer.getCart();
 
+		System.out.println("cpm products for updating : " + cpm.getListOfProducts());
 		if (cpm.getListOfProducts() != null) {
 
 			double totalPrice = calculateTotalPrice(cpm.getListOfProducts());
 			int quantity = getProductsQuantity(cpm.getListOfProducts());
-
+			System.out.println("total Price: " + totalPrice);
+			System.out.println("quantity: " + quantity);
 			cart.setTotalPrice(totalPrice);
 			cart.setTotalNumberOfProducts(quantity);
 

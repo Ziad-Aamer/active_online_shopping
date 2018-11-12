@@ -23,7 +23,7 @@ public class Customer extends User {
 			CascadeType.REFRESH })
 	private List<Order> orders;
 
-	@OneToOne(cascade = { CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH })
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "cart_id")
 	private Cart cart;
 

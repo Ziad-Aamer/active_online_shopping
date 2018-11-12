@@ -11,4 +11,6 @@ public interface CustomerDao {
 
 	public void addCustomerAddress(int customerId, Address address);
 
+	public void deleteCustomer(String email);
+
 }

@@ -43,24 +43,28 @@ public class OrderServiceImpl implements OrderService {
 	@Transactional
 	@Override
 	public void update(Order order) {
-		orderDao.update(order);
+		if (order.getAddress() != null) {
+			orderDao.update(order);
+		}
 	}
 
 	@Transactional
 	@Override
 	public void createOrder(List<CartProduct> cartProducts, Order order) {
-
-		order.setStatus("pending");
-		order.setTimestamp(new Date());
-		Order createdOrder = orderDao.createOrder(order);
-		for (CartProduct cartProduct : cartProducts) {
-			OrderProductId opId = new OrderProductId(createdOrder.getId(), cartProduct.getProduct().getId());
-			OrderProduct orderProduct = new OrderProduct();
-			orderProduct.setId(opId);
-			orderProduct.setOrder(createdOrder);
-			orderProduct.setProduct(cartProduct.getProduct());
-			orderProduct.setPrice(cartProduct.getProduct().getPrice());
-			orderDao.createOrderProduct(orderProduct);
+		System.out.println("order Address For testing : " + order.getAddress());
+		if (order.getAddress() != null) {
+			order.setStatus("pending");
+			order.setTimestamp(new Date());
+			Order createdOrder = orderDao.createOrder(order);
+			for (CartProduct cartProduct : cartProducts) {
+				OrderProductId opId = new OrderProductId(createdOrder.getId(), cartProduct.getProduct().getId());
+				OrderProduct orderProduct = new OrderProduct();
+				orderProduct.setId(opId);
+				orderProduct.setOrder(createdOrder);
+				orderProduct.setProduct(cartProduct.getProduct());
+				orderProduct.setPrice(cartProduct.getProduct().getPrice());
+				orderDao.createOrderProduct(orderProduct);
+			}
 		}
 	}
 }

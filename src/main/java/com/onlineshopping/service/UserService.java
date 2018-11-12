@@ -8,6 +8,8 @@ public interface UserService {
 
 	public User getUser(String email);
 
+	public void deleteUser(String email);
+
 	// this method for forgot password
 	public boolean doesUserExists(String email);
 

@@ -1,6 +1,7 @@
 package com.onlineshopping.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -66,6 +67,7 @@ public class OrderController {
 	@PostMapping("/updateOrderStatus")
 	public String updateOrderStatus(@ModelAttribute("order") Order order, Model model) {
 		System.out.println("new order status : " + order.getStatus() + "  order id : " + order.getId());
+		order.setTimestamp(new Date());
 		orderService.update(order);
 		List<Order> orders = orderService.getOrders();
 		model.addAttribute("orders", orders);

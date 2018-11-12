@@ -95,4 +95,13 @@ public class UserServiceImpl implements UserService {
 		userDetailsManager.createUser(tempUser);
 	}
 
+	@Override
+	public void deleteUser(String email) {
+		boolean ok = doesUserExist(email);
+
+		if (ok) {
+			userDetailsManager.deleteUser(email);
+		}
+	}
+
 }
