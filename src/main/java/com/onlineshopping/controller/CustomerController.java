@@ -3,13 +3,10 @@ package com.onlineshopping.controller;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
-import org.springframework.social.facebook.api.Facebook;
-import org.springframework.social.facebook.api.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,7 +16,6 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.onlineshopping.entity.Address;
@@ -27,14 +23,10 @@ import com.onlineshopping.entity.Customer;
 import com.onlineshopping.service.CustomerService;
 import com.onlineshopping.service.EmailService;
 import com.onlineshopping.service.UserService;
-import com.onlineshopping.social.SocialContext;
 
 @Controller
 @RequestMapping("/customer")
 public class CustomerController {
-
-	@Autowired
-	private SocialContext socialContext;
 
 	@Autowired
 	private UserService userService;
@@ -111,7 +103,7 @@ public class CustomerController {
 			String url = "please click the link below to continue your process: \n\n\n <a href='" + path
 					+ "'>Create New Password</a>";
 
-			// emailService.sendMimeMessage(email, "Confirmation Email", url);
+			emailService.sendMimeMessage(email, "Confirmation Email", url);
 			logger.info("email sent!!!!");
 		}
 		return "check-email";
@@ -179,23 +171,24 @@ public class CustomerController {
 
 	}
 
-	@RequestMapping(value = "/posts", method = RequestMethod.GET)
-	public String showPostsForUser(HttpServletRequest request, HttpServletResponse response, Model model) {
-		String nextView;
+	@GetMapping("FbUserProfile")
+	public String getFbUserProfile(@RequestParam String email, @RequestParam String first_name,
+			@RequestParam String last_name, Model theModel) {
+		System.out.println("email from facebook :" + email);
+		System.out.println("first_name from facebook :" + first_name);
+		System.out.println("last_name from facebook :" + last_name);
+		Customer c = new Customer();
+		c.setEmail(email);
+		c.setFirstName(first_name);
+		c.setLastName(last_name);
 
-		if (socialContext.isSignedIn(request, response)) {
-			System.out.println("\n==============>logged in Cool!");
-			nextView = "show-posts";
-		} else {
-			System.out.println("\n==============> not logged in yet ");
-			nextView = "signin";
-		}
-		Facebook facebook = socialContext.getFacebook();
-		String[] fields = { "id", "email", "first_name", "last_name" };
-		User userProfile = facebook.fetchObject("me", User.class, fields);
-		logger.info("\n==========> email facebook: " + userProfile.getEmail() + " firstName: "
-				+ userProfile.getFirstName());
-		return nextView;
+		theModel.addAttribute("customer", c);
+		theModel.addAttribute("registrationError", "Enter your password.");
+
+		logger.warning("Email/password must be valid.");
+
+		return "customer-registration";
+
 	}
 
 	@GetMapping("delete")

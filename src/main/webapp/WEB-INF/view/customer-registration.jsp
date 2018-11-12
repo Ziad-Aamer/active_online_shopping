@@ -22,6 +22,8 @@
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+
 </head>
 
 <body>
@@ -109,15 +111,10 @@
 								<button type="submit" class="btn btn-primary">Register</button>
 							</div>
 						</div>
-		    <a href="/signin/facebook">sign in with Facebook</a>
-
 					</form:form>
 <br>
+        <button class="fb_login">Sign up with Facebook</button> 
 
-<form action="<c:url value="/signin/facebook" />" method="POST">
-		    <button type="submit">Sign in with Facebook</button>
-		    <input type="hidden" name="scope" value="public_profile,email" />	    
-		</form>
 				</div>
 
 			</div>
@@ -126,5 +123,45 @@
 
 	</div>
 
+        <script>
+            window.fbAsyncInit = function() {
+               FB.init({
+                    appId      : '254163685248080',
+                    status     : false, 
+                    cookie     : true,
+                    xfbml      : true,
+                    oauth      : true
+                });
+                $(".fb_login").click(function() {
+                   FB.login(Facebook_login);
+                }); 
+            };
+
+
+            (function(d){
+            var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+            js = d.createElement('script'); js.id = id; js.async = true;
+            js.src = "//connect.facebook.net/en_US/all.js";
+            d.getElementsByTagName('head')[0].appendChild(js);
+            }(document));
+
+          function Facebook_login () {
+            FB.getLoginStatus(function(response) {
+                if (response.status === 'connected') {
+                	testAPI();
+                }
+            });
+          }
+          
+          function testAPI() {
+        	    console.log('Welcome!  Fetching your information.... ');
+        	    FB.api('/me', { locale: 'en_US', fields: 'name, email,first_name,last_name'}, function(response) {
+        	 // var customer = {email:response.email, firstName:response.first_name, lastName:response.last_name}
+        	  
+        	  window.location = '${pageContext.request.contextPath}/customer/FbUserProfile?email=' + response.email+'&'+'first_name='+response.first_name + '&'+'last_name='+response.last_name;
+        	  //window.location = '${pageContext.request.contextPath}/customer/FbUserProfile?customer='+customer;
+        	    });
+        	  }
+        </script>
 </body>
 </html>
