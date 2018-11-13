@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.onlineshopping.common.Commons;
 import com.onlineshopping.entity.Cart;
 import com.onlineshopping.entity.CartProduct;
 import com.onlineshopping.entity.CartProductCm;
@@ -32,6 +33,8 @@ public class CartController {
 	private CartService cartService;
 
 	List<CartProduct> listOfProducts;
+
+	Commons common = new Commons();
 
 	// get the user cart
 	// get the cart products from the join table
@@ -100,8 +103,8 @@ public class CartController {
 		System.out.println("cpm products for updating : " + cpm.getListOfProducts());
 		if (cpm.getListOfProducts() != null) {
 
-			double totalPrice = calculateTotalPrice(cpm.getListOfProducts());
-			int quantity = getProductsQuantity(cpm.getListOfProducts());
+			double totalPrice = common.calculateTotalPrice(cpm.getListOfProducts());
+			int quantity = common.getProductsQuantity(cpm.getListOfProducts());
 			System.out.println("total Price: " + totalPrice);
 			System.out.println("quantity: " + quantity);
 			cart.setTotalPrice(totalPrice);
@@ -118,22 +121,6 @@ public class CartController {
 			theModel.addAttribute("cpm", cpm);
 		}
 		return "cart";
-	}
-
-	private double calculateTotalPrice(List<CartProduct> cartProducts) {
-		double totalPrice = 0;
-		for (CartProduct cartProduct : cartProducts) {
-			totalPrice += cartProduct.getQuantity() * cartProduct.getProduct().getPrice();
-		}
-		return totalPrice;
-	}
-
-	private int getProductsQuantity(List<CartProduct> cartProducts) {
-		int quantity = 0;
-		for (CartProduct cartProduct : cartProducts) {
-			quantity += cartProduct.getQuantity();
-		}
-		return quantity;
 	}
 
 	public List<CartProduct> getListOfProducts() {

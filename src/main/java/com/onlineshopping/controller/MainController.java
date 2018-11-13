@@ -37,7 +37,7 @@ public class MainController {
 
 	@GetMapping("/")
 	public String gotoIndex(HttpServletRequest request, Model model) {
-
+		System.out.println("inside indexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 		List<Category> categoreis = beanInitilizer.getCategoriesEAGER();
 
 		List<Product> products = new ArrayList<>();

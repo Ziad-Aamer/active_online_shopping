@@ -48,6 +48,7 @@ public class MySimpleUrlAuthenticationSuccessHandler implements AuthenticationSu
 		boolean isAdmin = false;
 		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 		for (GrantedAuthority grantedAuthority : authorities) {
+			System.out.println("Authority of logged in user : " + grantedAuthority.getAuthority());
 			if (grantedAuthority.getAuthority().equals("ROLE_CUSTOMER")) {
 				isCustomer = true;
 				break;
@@ -60,7 +61,7 @@ public class MySimpleUrlAuthenticationSuccessHandler implements AuthenticationSu
 		if (isCustomer) {
 			return "/user/showUser";
 		} else if (isAdmin) {
-			return "/";
+			return "/orders/list";
 		} else {
 			throw new IllegalStateException();
 		}

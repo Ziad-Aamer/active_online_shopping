@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.onlineshopping.common.Commons;
 import com.onlineshopping.entity.Address;
 import com.onlineshopping.entity.CartProduct;
 import com.onlineshopping.entity.Customer;
@@ -34,6 +35,8 @@ public class CheckOutController {
 	private OrderService orderService;
 
 	private List<Address> addresses;
+
+	Commons common = new Commons();
 
 	@GetMapping("/")
 	public String index(HttpServletRequest request, Model model) {
@@ -68,20 +71,12 @@ public class CheckOutController {
 		order.setCustomer(customer);
 		order.setAddress(targetAddress.get(0));
 		List<CartProduct> cartProducts = cartService.getProducts(customer.getCart().getId());
-
-		order.setTotalPrice(calculateTotalPrice(cartProducts));
+		System.out.println("total price when create order : " + common.calculateTotalPrice(cartProducts));
+		order.setTotalPrice(common.calculateTotalPrice(cartProducts));
 		orderService.createOrder(cartProducts, order);
 		cartService.removeCartProducts(cartProducts);
 		System.out.println("saved Successfully!!! : ");
 		return "redirect:/";
-	}
-
-	private double calculateTotalPrice(List<CartProduct> cartProducts) {
-		double totalPrice = 0;
-		for (CartProduct cartProduct : cartProducts) {
-			totalPrice += cartProduct.getQuantity() * cartProduct.getProduct().getPrice();
-		}
-		return totalPrice;
 	}
 
 	public List<Address> getAddresses() {

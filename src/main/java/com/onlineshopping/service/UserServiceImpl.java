@@ -90,7 +90,7 @@ public class UserServiceImpl implements UserService {
 		}
 
 		org.springframework.security.core.userdetails.User tempUser = new org.springframework.security.core.userdetails.User(
-				email, "{noop}" + newPassword, grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_EMPLOYEE")), ok,
+				email, "{noop}" + newPassword, grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_CUSTOMER")), ok,
 				ok, ok, grantedAuthorities);
 		userDetailsManager.createUser(tempUser);
 	}

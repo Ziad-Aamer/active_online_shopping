@@ -7,6 +7,8 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,6 +28,7 @@ import com.onlineshopping.service.UserService;
 
 @Controller
 @RequestMapping("/customer")
+@PropertySource("classpath:application.properties")
 public class CustomerController {
 
 	@Autowired
@@ -34,6 +37,9 @@ public class CustomerController {
 	private CustomerService customerService;
 	@Autowired
 	private EmailService emailService;
+
+	@Autowired
+	private Environment env;
 
 	private Logger logger = Logger.getLogger(getClass().getName());
 
@@ -90,8 +96,8 @@ public class CustomerController {
 
 	@GetMapping("/forgotPassword")
 	public String forgotPassword(HttpServletRequest request, @RequestParam("email") String email, Model model) {
-		String host = "http://localhost:8080";
-		String path = host + request.getContextPath() + "/customer/newPasswordForm?email=" + email;
+
+		String path = env.getProperty("host") + request.getContextPath() + "/customer/newPasswordForm?email=" + email;
 
 		boolean exist = userService.doesUserExists(email);
 		if (!exist) {
@@ -174,9 +180,6 @@ public class CustomerController {
 	@GetMapping("FbUserProfile")
 	public String getFbUserProfile(@RequestParam String email, @RequestParam String first_name,
 			@RequestParam String last_name, Model theModel) {
-		System.out.println("email from facebook :" + email);
-		System.out.println("first_name from facebook :" + first_name);
-		System.out.println("last_name from facebook :" + last_name);
 		Customer c = new Customer();
 		c.setEmail(email);
 		c.setFirstName(first_name);

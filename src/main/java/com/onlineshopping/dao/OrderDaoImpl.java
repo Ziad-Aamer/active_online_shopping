@@ -34,8 +34,8 @@ public class OrderDaoImpl implements OrderDao {
 		if (orderStatus.isEmpty()) {
 			query = session.createQuery("From Order", Order.class);
 		} else {
-			query = session.createQuery("From Order as r where r.status=:status", Order.class);
-			query.setParameter("status", orderStatus);
+			query = session.createQuery("From Order as r where r.status like '%" + orderStatus + "%'", Order.class);
+			// query.setParameter("status", orderStatus);
 		}
 
 		List<Order> orders = query.list();

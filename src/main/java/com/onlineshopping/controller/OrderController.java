@@ -58,6 +58,8 @@ public class OrderController {
 	public String showFormUpdate(@RequestParam("orderId") int orderId, Model model) {
 		System.out.println("inside updateOrderStatus !!!!!!!!!!!!!!!!!!!!!!!!!!!" + orderId);
 		Order order = orderService.findOrderById(orderId);
+		OrdersStatus();
+		System.out.println("order before update : " + order.getAddress().getId());
 		model.addAttribute("order", order);
 		model.addAttribute("ordersStatus", ordersStatus);
 		System.out.println("All Orders Statusssss: " + ordersStatus);
@@ -67,11 +69,16 @@ public class OrderController {
 	@PostMapping("/updateOrderStatus")
 	public String updateOrderStatus(@ModelAttribute("order") Order order, Model model) {
 		System.out.println("new order status : " + order.getStatus() + "  order id : " + order.getId());
+
+		Order orderBeforeUpdate = orderService.findOrderById(order.getId());
+		System.out.println("order after update : " + orderBeforeUpdate.getAddress().getId());
 		order.setTimestamp(new Date());
+		order.setAddress(orderBeforeUpdate.getAddress());
+		order.setCustomer(orderBeforeUpdate.getCustomer());
 		orderService.update(order);
 		List<Order> orders = orderService.getOrders();
 		model.addAttribute("orders", orders);
-		return "admin-orders";
+		return "redirect:/orders/list";
 	}
 
 	public String getSelectedOrderStatus() {
