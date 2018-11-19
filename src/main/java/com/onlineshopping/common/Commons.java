@@ -1,6 +1,9 @@
 package com.onlineshopping.common;
 
+import java.util.Collection;
 import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
 
 import com.onlineshopping.entity.CartProduct;
 
@@ -23,5 +26,29 @@ public class Commons {
 			quantity += cartProduct.getQuantity();
 		}
 		return quantity;
+	}
+
+	public String determineTargetUrl(Collection<? extends GrantedAuthority> authorities) {
+		boolean isCustomer = false;
+		boolean isAdmin = false;
+
+		for (GrantedAuthority grantedAuthority : authorities) {
+			System.out.println("Authority of logged in user : " + grantedAuthority.getAuthority());
+			if (grantedAuthority.getAuthority().equals("ROLE_CUSTOMER")) {
+				isCustomer = true;
+				break;
+			} else if (grantedAuthority.getAuthority().equals("ROLE_ADMIN")) {
+				isAdmin = true;
+				break;
+			}
+		}
+
+		if (isCustomer) {
+			return "/user/showUser";
+		} else if (isAdmin) {
+			return "/orders/list";
+		} else {
+			throw new IllegalStateException();
+		}
 	}
 }
