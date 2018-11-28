@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,6 +28,7 @@ import com.onlineshopping.entity.Product;
 import com.onlineshopping.entity.SubCategory;
 import com.onlineshopping.service.CartService;
 
+@Secured({ "ROLE_CUSTOMER" })
 @Controller
 public class MainController {
 
@@ -44,7 +45,7 @@ public class MainController {
 		this.beanInitilizer = dataInitilizerBean;
 	}
 
-	@PreAuthorize("hasRole('ROLE_CUSTOMER')")
+	@Secured({ "ROLE_CUSTOMER" })
 	@GetMapping("/")
 	public String gotoIndex(HttpServletRequest request, HttpServletResponse response, Model model) {
 		List<Category> categoreis = beanInitilizer.getCategoriesEAGER();

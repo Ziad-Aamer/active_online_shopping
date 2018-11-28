@@ -3,16 +3,23 @@ package com.onlineshopping.common;
 import java.util.Collection;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 
 import com.onlineshopping.entity.CartProduct;
+import com.onlineshopping.entity.Customer;
 
 public class Commons {
 
 	public Commons() {
 	}
 
-	public double calculateTotalPrice(List<CartProduct> cartProducts) {
+	public static double calculateTotalPrice(List<CartProduct> cartProducts) {
 		double totalPrice = 0;
 		for (CartProduct cartProduct : cartProducts) {
 			totalPrice += cartProduct.getQuantity() * cartProduct.getProduct().getPrice();
@@ -20,7 +27,7 @@ public class Commons {
 		return totalPrice;
 	}
 
-	public int getProductsQuantity(List<CartProduct> cartProducts) {
+	public static int getProductsQuantity(List<CartProduct> cartProducts) {
 		int quantity = 0;
 		for (CartProduct cartProduct : cartProducts) {
 			quantity += cartProduct.getQuantity();
@@ -28,7 +35,7 @@ public class Commons {
 		return quantity;
 	}
 
-	public String determineTargetUrl(Collection<? extends GrantedAuthority> authorities) {
+	public static String determineTargetUrl(Collection<? extends GrantedAuthority> authorities) {
 		boolean isCustomer = false;
 		boolean isAdmin = false;
 
@@ -50,5 +57,30 @@ public class Commons {
 		} else {
 			throw new IllegalStateException();
 		}
+	}
+
+	public static Customer isLoggedIn(HttpServletRequest request) {
+		Customer customer = (Customer) request.getSession().getAttribute("loggedinUser");
+		if (customer == null)
+			return null;
+		return customer;
+	}
+
+	public static String isAdminLoggedIn(HttpServletRequest request, HttpServletResponse response) {
+
+		Collection<? extends GrantedAuthority> authorities = (Collection<? extends GrantedAuthority>) SecurityContextHolder
+				.getContext().getAuthentication().getAuthorities();
+		String target = determineTargetUrl(authorities);
+		System.out.println("target for returning page !!!" + target);
+		if (target.equals("/user/showUser")) {
+
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			if (auth != null) {
+				new SecurityContextLogoutHandler().logout(request, response, auth);
+			}
+			return "redirect:/user/showMyLoginPage?logout";
+		}
+
+		return "";
 	}
 }

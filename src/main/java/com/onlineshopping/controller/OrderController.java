@@ -1,7 +1,6 @@
 package com.onlineshopping.controller;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -9,10 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +21,7 @@ import com.onlineshopping.common.Commons;
 import com.onlineshopping.entity.Order;
 import com.onlineshopping.service.OrderService;
 
+@Secured({ "ROLE_ADMIN" })
 @RequestMapping("/orders")
 @Controller
 public class OrderController {
@@ -45,17 +42,9 @@ public class OrderController {
 	@GetMapping("/list")
 	public String getOrders(Model model, HttpServletRequest request, HttpServletResponse response) {
 
-		Collection<? extends GrantedAuthority> authorities = (Collection<? extends GrantedAuthority>) SecurityContextHolder
-				.getContext().getAuthentication().getAuthorities();
-		String target = common.determineTargetUrl(authorities);
-
-		if (target.equals("/user/showUser")) {
-
-			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			if (auth != null) {
-				new SecurityContextLogoutHandler().logout(request, response, auth);
-			}
-			return "redirect:/user/showMyLoginPage?logout";
+		String redirectedUrl = Commons.isAdminLoggedIn(request, response);
+		if (!redirectedUrl.isEmpty()) {
+			return redirectedUrl;
 		}
 
 		OrdersStatus();
@@ -71,18 +60,11 @@ public class OrderController {
 	public String search(@RequestParam("orderStatusSearch") String orderStatusSearch, HttpServletRequest request,
 			HttpServletResponse response, Model model) {
 
-		Collection<? extends GrantedAuthority> authorities = (Collection<? extends GrantedAuthority>) SecurityContextHolder
-				.getContext().getAuthentication().getAuthorities();
-		String target = common.determineTargetUrl(authorities);
-
-		if (target.equals("/user/showUser")) {
-
-			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			if (auth != null) {
-				new SecurityContextLogoutHandler().logout(request, response, auth);
-			}
-			return "redirect:/user/showMyLoginPage?logout";
+		String redirectedUrl = Commons.isAdminLoggedIn(request, response);
+		if (!redirectedUrl.isEmpty()) {
+			return redirectedUrl;
 		}
+
 		System.out.println("\n============>input Search textBox : " + orderStatusSearch);
 		List<Order> orders = orderService.findByOrderStatus(orderStatusSearch);
 		model.addAttribute("orders", orders);
@@ -94,18 +76,11 @@ public class OrderController {
 	public String showFormUpdate(@RequestParam("orderId") int orderId, HttpServletRequest request,
 			HttpServletResponse response, Model model) {
 
-		Collection<? extends GrantedAuthority> authorities = (Collection<? extends GrantedAuthority>) SecurityContextHolder
-				.getContext().getAuthentication().getAuthorities();
-		String target = common.determineTargetUrl(authorities);
-
-		if (target.equals("/user/showUser")) {
-
-			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			if (auth != null) {
-				new SecurityContextLogoutHandler().logout(request, response, auth);
-			}
-			return "redirect:/user/showMyLoginPage?logout";
+		String redirectedUrl = Commons.isAdminLoggedIn(request, response);
+		if (!redirectedUrl.isEmpty()) {
+			return redirectedUrl;
 		}
+
 		System.out.println("inside updateOrderStatus !!!!!!!!!!!!!!!!!!!!!!!!!!!" + orderId);
 		Order order = orderService.findOrderById(orderId);
 		OrdersStatus();
@@ -120,19 +95,10 @@ public class OrderController {
 	public String updateOrderStatus(@ModelAttribute("order") Order order, HttpServletRequest request,
 			HttpServletResponse response, Model model) {
 
-		Collection<? extends GrantedAuthority> authorities = (Collection<? extends GrantedAuthority>) SecurityContextHolder
-				.getContext().getAuthentication().getAuthorities();
-		String target = common.determineTargetUrl(authorities);
-
-		if (target.equals("/user/showUser")) {
-
-			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			if (auth != null) {
-				new SecurityContextLogoutHandler().logout(request, response, auth);
-			}
-			return "redirect:/user/showMyLoginPage?logout";
+		String redirectedUrl = Commons.isAdminLoggedIn(request, response);
+		if (!redirectedUrl.isEmpty()) {
+			return redirectedUrl;
 		}
-
 		System.out.println("new order status : " + order.getStatus() + "  order id : " + order.getId());
 
 		Order orderBeforeUpdate = orderService.findOrderById(order.getId());

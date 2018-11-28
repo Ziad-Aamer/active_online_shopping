@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,12 +21,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.onlineshopping.common.Commons;
 import com.onlineshopping.entity.Address;
 import com.onlineshopping.entity.Customer;
 import com.onlineshopping.service.CustomerService;
 import com.onlineshopping.service.EmailService;
 import com.onlineshopping.service.UserService;
 
+@Secured({ "ROLE_CUSTOMER" })
 @Controller
 @RequestMapping("/customer")
 @PropertySource("classpath:application.properties")
@@ -52,7 +55,12 @@ public class CustomerController {
 	}
 
 	@GetMapping("showNewAddressForm")
-	public String addNewAddress(Model model) {
+	public String addNewAddress(Model model, HttpServletRequest request) {
+
+		Customer customer = Commons.isLoggedIn(request);
+		if (customer == null)
+			return "redirect:/";
+
 		model.addAttribute("address", new Address());
 		return "address";
 	}
@@ -61,8 +69,7 @@ public class CustomerController {
 	public String addNewAddress(@Valid @ModelAttribute("address") Address address, BindingResult bindingResult,
 			HttpServletRequest request, Model model) {
 
-		Customer customer = (Customer) request.getSession().getAttribute("loggedinUser");
-
+		Customer customer = Commons.isLoggedIn(request);
 		if (customer == null)
 			return "redirect:/";
 
@@ -79,7 +86,11 @@ public class CustomerController {
 	}
 
 	@GetMapping("/showRegistrationForm")
-	public String showRegistratonForm(Model theModel) {
+	public String showRegistratonForm(Model theModel, HttpServletRequest request) {
+
+		Customer customer = Commons.isLoggedIn(request);
+		if (customer == null)
+			return "redirect:/";
 
 		theModel.addAttribute("customer", new Customer());
 		// need to update the name of the page returned
@@ -87,7 +98,11 @@ public class CustomerController {
 	}
 
 	@GetMapping("/showForgetPasswordForm")
-	public String showForgetPasswordForm(Model theModel) {
+	public String showForgetPasswordForm(Model theModel, HttpServletRequest request) {
+
+		Customer customer = Commons.isLoggedIn(request);
+		if (customer == null)
+			return "redirect:/";
 
 		theModel.addAttribute("customer", new Customer());
 		// need to update the name of the page returned

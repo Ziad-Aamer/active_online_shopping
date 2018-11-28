@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,7 @@ import com.onlineshopping.service.CartService;
 import com.onlineshopping.service.CustomerService;
 import com.onlineshopping.service.OrderService;
 
+@Secured({ "ROLE_CUSTOMER" })
 @RequestMapping("checkout")
 @Controller
 public class CheckOutController {

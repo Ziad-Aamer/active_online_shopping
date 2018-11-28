@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.onlineshopping.config.DataInitilizerBean;
 import com.onlineshopping.entity.Category;
+import com.onlineshopping.entity.Customer;
 import com.onlineshopping.entity.Product;
 import com.onlineshopping.entity.SubCategory;
 
+@Secured({ "ROLE_CUSTOMER" })
 @RequestMapping("/product")
 @Controller
 public class ProductController {
@@ -25,7 +30,12 @@ public class ProductController {
 
 	@GetMapping("/search")
 	public String search(@RequestParam("searchProducts") String searchProducts, @RequestParam String categoryName,
-			Model model) {
+			Model model, HttpServletRequest request) {
+
+		Customer customer = (Customer) request.getSession().getAttribute("loggedinUser");
+
+		if (customer == null)
+			return "redirect:/";
 
 		List<Category> selectedCategories = new ArrayList<>();
 		// get selected category from list for search..
@@ -60,7 +70,13 @@ public class ProductController {
 
 	@GetMapping("/filterByPrice")
 	public String filterByPrice(@RequestParam("price-min") double minPrice, @RequestParam("price-max") double maxPrice,
-			Model model) {
+			Model model, HttpServletRequest request) {
+
+		Customer customer = (Customer) request.getSession().getAttribute("loggedinUser");
+
+		if (customer == null)
+			return "redirect:/";
+
 		System.out.println("inside filter by price :" + minPrice + "  max price : " + maxPrice);
 
 		List<Category> allCategories = new ArrayList<>();

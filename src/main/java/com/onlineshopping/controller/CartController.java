@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,7 @@ import com.onlineshopping.entity.CartProductId;
 import com.onlineshopping.entity.Customer;
 import com.onlineshopping.service.CartService;
 
+@Secured({ "ROLE_CUSTOMER" })
 @Controller
 @RequestMapping("/cart")
 public class CartController {
@@ -33,8 +35,6 @@ public class CartController {
 	private CartService cartService;
 
 	List<CartProduct> listOfProducts;
-
-	Commons common = new Commons();
 
 	// get the user cart
 	// get the cart products from the join table
@@ -70,9 +70,10 @@ public class CartController {
 	@GetMapping("/removeProduct/{productId}")
 	public String removeProductForTesting(@PathVariable int productId, HttpServletRequest request) {
 
-		Customer customer = (Customer) request.getSession().getAttribute("loggedinUser");
+		Customer customer = Commons.isLoggedIn(request);
 		if (customer == null)
 			return "redirect:/";
+
 		Cart cart = customer.getCart();
 		cartService.removeProduct(cart, productId);
 		return "redirect:/cart/showCart";
@@ -81,9 +82,10 @@ public class CartController {
 	@GetMapping("/addProduct/{productId}")
 	public String addProduct(@PathVariable int productId, HttpServletRequest request) {
 
-		Customer customer = (Customer) request.getSession().getAttribute("loggedinUser");
+		Customer customer = Commons.isLoggedIn(request);
 		if (customer == null)
 			return "redirect:/";
+
 		Cart cart = customer.getCart();
 
 		cartService.addProduct(cart, productId);
@@ -95,7 +97,7 @@ public class CartController {
 	public String updateCartProducts(@ModelAttribute("cpm") CartProductCm cpm, HttpServletRequest request,
 			Model theModel) {
 		System.out.println("inside updateCart method !!!!!!!!!!!!");
-		Customer customer = (Customer) request.getSession().getAttribute("loggedinUser");
+		Customer customer = Commons.isLoggedIn(request);
 		if (customer == null)
 			return "redirect:/";
 		Cart cart = customer.getCart();
@@ -103,8 +105,9 @@ public class CartController {
 		System.out.println("cpm products for updating : " + cpm.getListOfProducts());
 		if (cpm.getListOfProducts() != null) {
 
-			double totalPrice = common.calculateTotalPrice(cpm.getListOfProducts());
-			int quantity = common.getProductsQuantity(cpm.getListOfProducts());
+			double totalPrice;
+			totalPrice = Commons.calculateTotalPrice(cpm.getListOfProducts());
+			int quantity = Commons.getProductsQuantity(cpm.getListOfProducts());
 			System.out.println("total Price: " + totalPrice);
 			System.out.println("quantity: " + quantity);
 			cart.setTotalPrice(totalPrice);
